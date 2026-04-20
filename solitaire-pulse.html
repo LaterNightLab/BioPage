@@ -52,37 +52,39 @@
         .back-btn {
             display: inline-flex;
             align-items: center;
-            padding: 0.5rem 1rem;
+            padding: 12px 24px;
             background: var(--card-bg);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             text-decoration: none;
             color: var(--text-white);
-            font-weight: 700;
-            gap: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            gap: 15px;
             transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             width: fit-content;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .back-btn:hover {
-            background: rgba(30, 77, 82, 1);
             border-color: var(--accent-green);
-            transform: translateX(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(55, 255, 180, 0.15);
         }
 
         .back-btn img {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
         }
 
         .back-btn span {
-            font-size: 0.75rem;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 1.1rem;
+            opacity: 1;
         }
 
         /* Header */
