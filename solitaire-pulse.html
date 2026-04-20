@@ -110,75 +110,101 @@
             text-shadow: 0 0 20px rgba(255, 230, 0, 0.4);
         }
 
-        /* Main Content Grid */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 280px 1fr 300px;
-            gap: 2rem;
+        /* Header Bar: Back Button + Links */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            width: 100%;
             max-width: 1400px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .link-box {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 6px 12px;
+            text-decoration: none;
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 0.85rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .link-box:hover {
+            border-color: var(--accent-green);
+            background: rgba(30, 77, 82, 1);
+        }
+
+        /* Standardized Header */
+        header {
+            text-align: center;
+            margin: 2rem 0 4rem 0;
+        }
+
+        /* Content Sections Layout */
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            max-width: 1000px;
             width: 100%;
             margin: 0 auto;
         }
 
-        /* Columns */
-        .sidebar-left, .content-center, .sidebar-right {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* Section Cards */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .card-content {
+            flex: 1;
         }
 
         .card h2 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--accent-green);
             text-transform: uppercase;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .card h2::before {
             content: "◆";
-            font-size: 0.8rem;
-            opacity: 0.5;
+            font-size: 0.9rem;
+            opacity: 0.6;
         }
 
         .card p {
-            line-height: 1.6;
-            opacity: 0.9;
+            line-height: 1.8;
+            opacity: 0.85;
+            font-size: 1.05rem;
         }
 
-        /* Smaller Link Cards */
-        .link-card-small {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 0.8rem 1rem;
-            text-decoration: none;
-            color: var(--text-white);
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .link-card-small:hover {
-            background: rgba(55, 255, 180, 0.1);
-            border-color: var(--accent-green);
-            transform: scale(1.02);
+        .screenshot-container {
+            flex: 0 0 45%;
         }
 
         /* Screenshot Placeholders */
@@ -208,15 +234,18 @@
         }
 
         /* Responsive */
-        @media (max-width: 1100px) {
-            .main-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 900px) {
+            .card, .card.reverse {
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1.5rem;
             }
-            .sidebar-left, .sidebar-right {
-                order: 2;
+            .screenshot-container {
+                width: 100%;
             }
-            .content-center {
-                order: 1;
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
 
@@ -228,64 +257,56 @@
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn">
-        <img src="LNL icon.png" alt="LNL Logo">
-        <span>LaterNightLab</span>
-    </a>
+    <div class="top-bar">
+        <a href="index.html" class="back-btn" style="margin-bottom: 0;">
+            <img src="LNL icon.png" alt="LNL Logo">
+            <span>LaterNightLab</span>
+        </a>
+        <div class="header-links">
+            <a href="https://laternightlab.itch.io/solitaire-pulse" class="link-box" target="_blank">Itch.io</a>
+            <a href="https://gamejolt.com/games/solitarepulse/1051936" class="link-box" target="_blank">Game Jolt</a>
+            <a href="https://discord.gg/g4S7uSXyVY" class="link-box" target="_blank">Discord</a>
+        </div>
+    </div>
 
     <header>
         <img src="SP icon.png" alt="Solitaire Pulse Icon" class="game-icon">
         <h1>Solitaire Pulse</h1>
     </header>
 
-    <main class="main-grid">
-        <!-- Sidebar Left: Links -->
-        <aside class="sidebar-left">
-            <div class="card">
-                <h2>Official Stores</h2>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <a href="https://laternightlab.itch.io/solitaire-pulse" class="link-card-small" target="_blank">
-                        Itch.io <span>→</span>
-                    </a>
-                    <a href="https://gamejolt.com/games/solitarepulse/1051936" class="link-card-small" target="_blank">
-                        Game Jolt <span>→</span>
-                    </a>
-                    <a href="https://discord.gg/g4S7uSXyVY" class="link-card-small" target="_blank">
-                        Discord <span>→</span>
-                    </a>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Center: Game Info -->
-        <section class="content-center">
-            <div class="card">
+    <main class="main-column">
+        <!-- Section 1 -->
+        <article class="card">
+            <div class="card-content">
                 <h2>Description</h2>
                 <p>Welcome to Solitaire Pulse, a high-octane twist on the classic card game. Experience fast-paced gameplay, vibrant visual effects, and a modern aesthetic that brings Solitaire into a new era of energy and competition.</p>
             </div>
-            
-            <div class="card">
+            <div class="screenshot-container">
+                <div class="screenshot-placeholder">Feature Highlights</div>
+            </div>
+        </article>
+        
+        <!-- Section 2 -->
+        <article class="card">
+            <div class="card-content">
                 <h2>How to Play</h2>
                 <p>The goal is to move all cards to the four foundation piles, organized by suit from Ace to King. Build sequences in the tableau by alternating colors and decreasing rank. Use the draw pile to find more cards and keep the pulse going!</p>
             </div>
+            <div class="screenshot-container">
+                <div class="screenshot-placeholder">Gameplay Action</div>
+            </div>
+        </article>
 
-            <div class="card">
+        <!-- Section 3: Reversed -->
+        <article class="card reverse">
+            <div class="card-content">
                 <h2>Economy & Market</h2>
                 <p>Discover a unique in-game market where you can unlock custom card decks, special themes, and powerful boosters. Earn rewards as you play and customize your Solitaire experience to match your style.</p>
             </div>
-        </section>
-
-        <!-- Sidebar Right: Gallery -->
-        <aside class="sidebar-right">
-            <div class="card">
-                <h2>Gallery</h2>
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div class="screenshot-placeholder">Screenshot #1 Soon</div>
-                    <div class="screenshot-placeholder">Screenshot #2 Soon</div>
-                    <div class="screenshot-placeholder">Screenshot #3 Soon</div>
-                </div>
+            <div class="screenshot-container">
+                <div class="screenshot-placeholder">Marketplace Preview</div>
             </div>
-        </aside>
+        </article>
     </main>
 
     <footer>
