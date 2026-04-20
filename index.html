@@ -162,17 +162,31 @@
         /* Item Buttons */
         .item-link {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 1.2rem;
+            padding: 1rem;
             text-decoration: none;
             color: var(--text-white);
             transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
             margin-bottom: 1rem;
+        }
+
+        .item-link img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--glass-border);
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
         }
 
         .item-link:hover {
@@ -282,10 +296,12 @@
             <!-- Left: Apps -->
             <aside class="side-col">
                 <section class="section-card">
-                    <h2>Mobile Apps</h2>
+                    <h2>Apps</h2>
                     <div class="item-link" style="cursor: default; opacity: 0.7;">
-                        <span class="item-name">Ballers21</span>
-                        <span class="item-status">Coming Soon</span>
+                        <div class="item-details">
+                            <span class="item-name">Ballers21</span>
+                            <span class="item-status">Coming Soon</span>
+                        </div>
                     </div>
                 </section>
             </aside>
@@ -305,8 +321,11 @@
                 <section class="section-card">
                     <h2>Games</h2>
                     <a href="solitaire-pulse.html" class="item-link">
-                        <span class="item-name">Solitaire Pulse</span>
-                        <span class="item-status active">Play Now →</span>
+                        <img src="SP icon.png" alt="Solitaire Pulse Icon">
+                        <div class="item-details">
+                            <span class="item-name">Solitaire Pulse</span>
+                            <span class="item-status active">Play Now →</span>
+                        </div>
                     </a>
                 </section>
             </aside>
