@@ -223,6 +223,86 @@
             font-size: 0.9rem;
         }
 
+        /* Team Section */
+        .team-section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--accent-yellow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .member-header {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .member-header h3 {
+            font-size: 1.8rem;
+            color: var(--accent-white);
+        }
+
+        .member-role {
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .member-bio {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .member-quote {
+            font-style: italic;
+            color: var(--accent-green);
+            border-left: 3px solid var(--accent-green);
+            padding-left: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Feature Lists */
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            font-size: 1.4rem;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        .feature-info h4 {
+            font-size: 1.1rem;
+            color: var(--text-white);
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-info p {
+            font-size: 0.95rem !important;
+            line-height: 1.5 !important;
+        }
+
         /* Footer */
         footer {
             margin-top: 4rem;
@@ -263,6 +343,7 @@
             <img src="LNL icon.webp" alt="Later Night Lab Logo">
         </a>
         <div class="header-links">
+            <a href="https://apps.microsoft.com/detail/9ND2CRS3P1Q5?hl=neutral&gl=IT&ocid=pdpshare" class="link-box" target="_blank">Microsoft Store</a>
             <a href="https://laternightlab.itch.io/solitaire-pulse" class="link-box" target="_blank">Itch.io</a>
             <a href="https://gamejolt.com/games/solitarepulse/1051936" class="link-box" target="_blank">Game Jolt</a>
             <a href="https://discord.gg/g4S7uSXyVY" class="link-box" target="_blank">Discord</a>
@@ -275,38 +356,127 @@
     </header>
 
     <main class="main-column">
-        <!-- Section 1 -->
+        <!-- Section 1: Three Ways to Play -->
         <article class="card">
             <div class="card-content">
-                <h2>Description</h2>
-                <p>Welcome to Solitaire Pulse, a high-octane twist on the classic card game. Experience fast-paced gameplay, vibrant visual effects, and a modern aesthetic that brings Solitaire into a new era of energy and competition.</p>
+                <h2>Three Ways to Play</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">🧘</span>
+                        <div class="feature-info">
+                            <h4>Relax</h4>
+                            <p>No timer, no pressure, no connection required. Just you, the cards, and the game the way it was meant to be played. Perfect for unwinding anytime, anywhere — even offline.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <div class="feature-info">
+                            <h4>Time</h4>
+                            <p>Every second costs you points. Every move toward the foundation earns them back. The clock is always ticking — how long can you keep your score alive?</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚔️</span>
+                        <div class="feature-info">
+                            <h4>Challenge</h4>
+                            <p>1v1 online. Real opponents, real stakes. Finish first or be the last one standing. The most competitive solitaire experience you've ever had.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="screenshot-container">
-                <img src="SP Screenshot1.webp" alt="Solitaire Pulse Feature Highlight">
+                <img src="SP Screenshot1.webp" alt="Solitaire Pulse Gameplay Modes">
             </div>
         </article>
         
-        <!-- Section 2: Reversed (Screenshot Left) -->
+        <!-- Section 2: More Than Just Cards -->
         <article class="card reverse">
             <div class="card-content">
-                <h2>How to Play</h2>
-                <p>The goal is to move all cards to the four foundation piles, organized by suit from Ace to King. Build sequences in the tableau by alternating colors and decreasing rank. Use the draw pile to find more cards and keep the pulse going!</p>
+                <h2>More Than Just Cards</h2>
+                <p style="margin-bottom: 1rem;">Solitaire Pulse isn't just a game — it's a full competitive experience.</p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">🏆</span>
+                        <div class="feature-info">
+                            <h4>Monthly Leaderboards</h4>
+                            <p>Climb the ranks every month, per game mode.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎯</span>
+                        <div class="feature-info">
+                            <h4>Daily Challenges</h4>
+                            <p>New challenge every day. Keep your streak alive and unlock bonus rewards.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🏅</span>
+                        <div class="feature-info">
+                            <h4>Trophies</h4>
+                            <p>Complete challenges, dominate matches, collect them all.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👥</span>
+                        <div class="feature-info">
+                            <h4>Friends</h4>
+                            <p>Add your rivals, track their progress, challenge them directly.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <div class="feature-info">
+                            <h4>Power-Up Shop</h4>
+                            <p>Special tools to turn the tide when the game gets tight.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="screenshot-container">
-                <div class="screenshot-placeholder">Gameplay Action</div>
+                <div class="screenshot-placeholder">Competition & Social</div>
             </div>
         </article>
 
-        <!-- Section 3: Normal (Screenshot Right) -->
+        <!-- Section 3: Two Classic Games, Reinvented -->
         <article class="card">
             <div class="card-content">
-                <h2>Economy & Market</h2>
-                <p>Discover a unique in-game market where you can unlock custom card decks, special themes, and powerful boosters. Earn rewards as you play and customize your Solitaire experience to match your style.</p>
+                <h2>Two Classic Games, Reinvented</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">♠️</span>
+                        <div class="feature-info">
+                            <h4>Klondike</h4>
+                            <p>The timeless classic, now with a competitive edge.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🕷️</span>
+                        <div class="feature-info">
+                            <h4>Spider</h4>
+                            <p>More complexity, more strategy, more satisfaction.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="screenshot-container">
-                <div class="screenshot-placeholder">Marketplace Preview</div>
+                <div class="screenshot-placeholder">Game Modes Preview</div>
             </div>
         </article>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2 class="section-title">The Team</h2>
+            <div class="card">
+                <div class="card-content">
+                    <div class="member-header">
+                        <h3>MrGamer92</h3>
+                        <span class="member-role">Nightly Dev</span>
+                    </div>
+                    <p class="member-bio">Engineer by day. Dev by night. Gamer always. Building the games I always wanted to play — for everyone who wanted to play them too. Self-taught, learning every night, with a reliable crew of AI co-workers keeping the lab open after midnight.</p>
+                    <blockquote class="member-quote">"A gamer making games for gamers. Nothing more, nothing less."</blockquote>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
