@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Work - Later Night Lab</title>
+    <meta name="description" content="Run, grab, forge, deliver: build the finest wall in the courtyard before your rival does in this 3D medieval workshop race.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0A0D12;
+            --card-bg: rgba(18, 23, 33, 0.82);
+            --card-hover: rgba(24, 31, 46, 0.92);
+            --accent-gold: #F59E0B;
+            --accent-gold-bright: #FBBF24;
+            --accent-amber: #D97706;
+            --accent-steel: #38BDF8;
+            --text-main: #F8FAFC;
+            --text-body: #94A3B8;
+            --glass-border: rgba(245, 158, 11, 0.18);
+            --glass-border-subtle: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6), 0 0 20px -5px rgba(245, 158, 11, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(245, 158, 11, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 65%, rgba(56, 189, 248, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(217, 119, 6, 0.06) 0%, transparent 50%);
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Subtle stone tile pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 0 L56 28 L28 56 L0 28 Z' stroke='%23f59e0b' stroke-opacity='0.025' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header Bar: Back Button + Links */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent-gold-bright);
+            background: rgba(245, 158, 11, 0.12);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+        }
+
+        .back-btn img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .link-box {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 8px 18px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-box:hover {
+            border-color: var(--accent-gold-bright);
+            background: rgba(245, 158, 11, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+            color: #FFFFFF;
+        }
+
+        .link-box.primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: #0A0D12;
+            font-weight: 800;
+            border: none;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+        }
+
+        .link-box.primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 28px rgba(245, 158, 11, 0.5);
+            color: #000000;
+        }
+
+        /* Hero Header */
+        header {
+            text-align: center;
+            margin: 1.5rem auto 3.5rem auto;
+            max-width: 850px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .game-icon-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.25rem;
+        }
+
+        .game-icon-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 140%;
+            height: 140%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, transparent 68%);
+            z-index: 0;
+            filter: blur(16px);
+            pointer-events: none;
+        }
+
+        .game-icon {
+            width: 160px;
+            height: 160px;
+            border-radius: 36px;
+            object-fit: cover;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(245, 158, 11, 0.25);
+            border: 3px solid rgba(245, 158, 11, 0.4);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .game-icon:hover {
+            transform: scale(1.03) rotate(-1deg);
+            border-color: var(--accent-gold-bright);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-gold-bright);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            max-width: 680px;
+        }
+
+        /* Pill Badges */
+        .badge-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .badge-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-body);
+        }
+
+        .badge-pill.highlight {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.35);
+            color: var(--accent-gold);
+        }
+
+        /* CTA Hero Button */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: #0A0D12;
+            padding: 14px 34px;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4), 0 0 15px rgba(245, 158, 11, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(245, 158, 11, 0.55), 0 0 25px rgba(245, 158, 11, 0.3);
+            color: #000000;
+        }
+
+        /* Main Content Cards */
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            max-width: 1080px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(245, 158, 11, 0.35);
+            background: var(--card-hover);
+            transform: translateY(-2px);
+        }
+
+        .card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--accent-gold-bright);
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2::before {
+            content: "◆";
+            font-size: 1rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+        }
+
+        .card p {
+            line-height: 1.8;
+            color: var(--text-body);
+            font-size: 1.05rem;
+        }
+
+        .card p strong {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .highlight-text {
+            color: var(--accent-gold-bright) !important;
+            font-weight: 700;
+        }
+
+        .screenshot-container {
+            flex: 0 0 46%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .screenshot-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Feature Pillars List */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 16px;
+            padding: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .feature-box:hover {
+            background: rgba(245, 158, 11, 0.06);
+            border-color: rgba(245, 158, 11, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .feature-box h4 {
+            font-size: 1.05rem;
+            color: var(--accent-gold);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-box p {
+            font-size: 0.92rem !important;
+            line-height: 1.5 !important;
+            color: var(--text-body);
+        }
+
+        /* Controls Panel */
+        .controls-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            padding: 10px 16px;
+            border-radius: 12px;
+        }
+
+        .key-badge {
+            background: #1F2937;
+            color: var(--accent-gold-bright);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
+            min-width: 65px;
+            text-align: center;
+        }
+
+        .control-desc {
+            font-size: 0.95rem;
+            color: var(--text-body);
+        }
+
+        .control-desc strong {
+            color: var(--text-main);
+        }
+
+        /* Dual Gallery Card */
+        .gallery-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--accent-gold-bright);
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Bottom Action Callout */
+        .action-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .action-banner h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .action-banner p {
+            max-width: 600px;
+            color: var(--text-body);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-body);
+            opacity: 0.7;
+            padding-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .card, .card.reverse {
+                flex-direction: column;
+                padding: 1.75rem;
+                gap: 1.75rem;
+            }
+            .screenshot-container {
+                width: 100%;
+                flex: none;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: flex-start;
+            }
+            h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .tagline { font-size: 1.05rem; }
+            .game-icon { width: 120px; height: 120px; border-radius: 28px; }
+            body { padding: 1.2rem; }
+            .hero-cta { width: 100%; justify-content: center; }
+            .action-banner h3 { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="index.html" class="back-btn" title="Back to Later Night Lab">
+            <img src="LNL icon.webp" alt="Later Night Lab Logo">
+        </a>
+        <div class="header-links">
+            <a href="https://laternightlab.itch.io/master-work" class="link-box primary" target="_blank" rel="noopener">
+                <span>▶</span> Play on Itch.io
+            </a>
+            <span class="badge-pill highlight">HTML5 Web</span>
+            <span class="badge-pill">Windows PC</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="game-icon-wrap">
+            <div class="game-icon-glow"></div>
+            <img src="MW-icon.webp" alt="Master Work Icon" class="game-icon">
+        </div>
+        <h1>Master Work</h1>
+        <p class="tagline">Run, grab, forge, deliver: build the finest wall in the courtyard before your rival does.</p>
+        
+        <div class="badge-list">
+            <span class="badge-pill highlight">3D Medieval Strategy</span>
+            <span class="badge-pill">Godot 4.7 Engine</span>
+            <span class="badge-pill">Low Poly Aesthetic</span>
+            <span class="badge-pill">Keyboard & Touch</span>
+            <span class="badge-pill">6 Dynamic Rivals</span>
+        </div>
+
+        <a href="https://laternightlab.itch.io/master-work" class="hero-cta" target="_blank" rel="noopener">
+            <span>⚔️</span> Play in Browser Now
+        </a>
+    </header>
+
+    <main class="main-column">
+        <!-- CARD 1: Introduction (screenshot dx) -->
+        <article class="card">
+            <div class="card-content">
+                <h2>The Courtyard Forge Awaits</h2>
+                <p>
+                    <strong>Master Work</strong> is a fast-paced crafting race inside a vibrant medieval workshop. Run across the sunlit courtyard, scavenge essential materials — wood, iron, leather, gold, and crystal — from the baskets before your rival snatches them, fill your workbench with exact precision, hand-forge each tile, and haul it triumphantly to your mosaic wall.
+                    <br><br>
+                    <strong class="highlight-text">Speed is nothing without discipline:</strong> every surplus resource left in your hands gets tossed straight into the bin. Let six pieces hit the waste basket and your workshop run is finished!
+                </p>
+            </div>
+            <div class="screenshot-container">
+                <img src="MW-screenshot1.webp" alt="Master Work Courtyard Gameplay">
+            </div>
+        </article>
+
+        <!-- CARD 2: Rivals & Tactics (screenshot sx) -->
+        <article class="card reverse">
+            <div class="card-content">
+                <h2>Craft, Outsmart, Dominate</h2>
+                <p>
+                    Score massive bonuses for unbroken color chains, completed columns, and mastered material sets. But don't expect an easy victory — the guild courtyard is packed with fierce competition!
+                </p>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h4><span>👑</span> 6 Unique Rivals</h4>
+                        <p>From Gigi the nimble Errand Boy to Otto the venerable Master Builder, each challenger plays with distinct tactics and tempo.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><span>🔨</span> Master Builder's Hammer</h4>
+                        <p>One piece away from completion? Strike the hammer to instantly salvage a table and keep your crafting chain alive.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><span>📜</span> Daily Missions & Ranks</h4>
+                        <p>Tackle fresh workshop commissions every day, claim guild medals, and unlock exclusive colors for your team.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><span>⚡</span> Fast Tactical Rounds</h4>
+                        <p>When you're satisfied with your mosaic, take a seat: once both craftsmen are seated, the workshop clock runs at 10x speed!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="MW-screenshot2.webp" alt="Master Work Rivals and Crafting Tables">
+            </div>
+        </article>
+
+        <!-- CARD 3: Controls & Cross-Platform (screenshot dx) -->
+        <article class="card">
+            <div class="card-content">
+                <h2>Precision Workshop Controls</h2>
+                <p>
+                    Engineered from the ground up for instantaneous responsiveness with zero network latency. Play smoothly right in your desktop browser or on mobile touchscreens.
+                </p>
+                <div class="controls-list">
+                    <div class="control-row">
+                        <span class="key-badge">WASD / ↑↓←→</span>
+                        <span class="control-desc"><strong>Move</strong> across the courtyard and between workbenches</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">E</span>
+                        <span class="control-desc"><strong>Action:</strong> grab basket materials, place on table, forge tile, & lay on wall</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">Q</span>
+                        <span class="control-desc"><strong>Master Hammer:</strong> immediately completes a table missing just one item</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">F</span>
+                        <span class="control-desc"><strong>Sit Down:</strong> declare your round finished and accelerate the timer</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">Touchscreen</span>
+                        <span class="control-desc"><strong>Virtual thumbstick & intuitive round buttons</strong> tailored for phone & tablet</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="MW-screenshot3.webp" alt="Master Work Mosaic Wall & Controls">
+            </div>
+        </article>
+
+        <!-- CARD 4: Visual Showcase Gallery -->
+        <section class="gallery-card">
+            <h2>Workshop Visual Showcase</h2>
+            <p style="color: var(--text-body); max-width: 650px; margin: 0 auto 1.5rem auto;">
+                Built in Godot 4.7 using custom low-poly 3D models hand-crafted in Blender, optimized for lightweight, instant web loading.
+            </p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="MW-screenshot4.webp" alt="Master Work Workshop Perspective">
+                </div>
+                <div class="gallery-item">
+                    <img src="MW-cover.webp" alt="Master Work Official Art Cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Banner -->
+        <section class="action-banner">
+            <h3>Ready to Build Your Masterpiece?</h3>
+            <p>No downloads or installation required. Jump straight into the courtyard and prove your craft against the guild's finest!</p>
+            <a href="https://laternightlab.itch.io/master-work" class="hero-cta" target="_blank" rel="noopener">
+                <span>🔨</span> Launch Master Work on Itch.io
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2026 LATERNIGHTLAB — A project by MrGamer92
+    </footer>
+</body>
+</html>
