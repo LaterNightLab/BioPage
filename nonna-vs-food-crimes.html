@@ -2,13 +2,707 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=grandma-pina.html">
-    <title>Redirecting to Nonna vs Food Crimes (Grandma Pina)...</title>
-    <script>
-        window.location.href = "grandma-pina.html";
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nonna vs Food Crimes - Later Night Lab</title>
+    <meta name="description" content="Nonna has had enough of food crimes. Defend the kitchen against hordes of culinary abominations in this juicy 2D action roguelite.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Bungee&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #120A0B;
+            --card-bg: rgba(28, 16, 18, 0.84);
+            --card-hover: rgba(36, 20, 23, 0.94);
+            --accent-tomato: #FF4757;
+            --accent-tomato-glow: rgba(255, 71, 87, 0.4);
+            --accent-basil: #2ED573;
+            --accent-crust: #FFA502;
+            --text-main: #FFF5F5;
+            --text-body: #A89B9C;
+            --glass-border: rgba(255, 71, 87, 0.2);
+            --glass-border-subtle: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.65), 0 0 22px -5px rgba(255, 71, 87, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 18% 18%, rgba(255, 71, 87, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 82% 60%, rgba(46, 213, 115, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(255, 165, 2, 0.06) 0%, transparent 50%);
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Subtle kitchen gingham / tile pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 0 L24 48 M0 24 L48 24' stroke='%23ff4757' stroke-opacity='0.025' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header Bar: Back Button + Links */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent-tomato);
+            background: rgba(255, 71, 87, 0.12);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(255, 71, 87, 0.25);
+        }
+
+        .back-btn img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .link-box {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 8px 18px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-box:hover {
+            border-color: var(--accent-tomato);
+            background: rgba(255, 71, 87, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.3);
+            color: #FFFFFF;
+        }
+
+        .link-box.primary {
+            background: linear-gradient(135deg, #FF4757 0%, #FF6B81 100%);
+            color: #FFFFFF;
+            font-weight: 800;
+            border: none;
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.35);
+        }
+
+        .link-box.primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 28px rgba(255, 71, 87, 0.55);
+        }
+
+        /* Hero Header */
+        header {
+            text-align: center;
+            margin: 1.5rem auto 3.5rem auto;
+            max-width: 880px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .game-icon-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.25rem;
+        }
+
+        .game-icon-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 140%;
+            height: 140%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255, 71, 87, 0.35) 0%, transparent 68%);
+            z-index: 0;
+            filter: blur(16px);
+            pointer-events: none;
+        }
+
+        .game-icon {
+            width: 160px;
+            height: 160px;
+            border-radius: 36px;
+            object-fit: cover;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 71, 87, 0.25);
+            border: 3px solid rgba(255, 71, 87, 0.4);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .game-icon:hover {
+            transform: scale(1.03) rotate(1deg);
+            border-color: var(--accent-tomato);
+        }
+
+        h1 {
+            font-size: 3.6rem;
+            font-weight: 900;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-crust);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            max-width: 720px;
+        }
+
+        /* Pill Badges */
+        .badge-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .badge-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-body);
+        }
+
+        .badge-pill.highlight {
+            background: rgba(255, 71, 87, 0.14);
+            border-color: rgba(255, 71, 87, 0.4);
+            color: var(--accent-tomato);
+        }
+
+        .badge-pill.green {
+            background: rgba(46, 213, 115, 0.12);
+            border-color: rgba(46, 213, 115, 0.35);
+            color: var(--accent-basil);
+        }
+
+        /* CTA Hero Button */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #FF4757 0%, #FF6B81 100%);
+            color: #FFFFFF;
+            padding: 14px 34px;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4), 0 0 15px rgba(255, 71, 87, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(255, 71, 87, 0.6), 0 0 25px rgba(255, 71, 87, 0.3);
+        }
+
+        /* Main Content Cards */
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            max-width: 1080px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 71, 87, 0.35);
+            background: var(--card-hover);
+            transform: translateY(-2px);
+        }
+
+        .card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            color: var(--accent-tomato);
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2::before {
+            content: "🍅";
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            line-height: 1.8;
+            color: var(--text-body);
+            font-size: 1.05rem;
+        }
+
+        .card p strong {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .highlight-text {
+            color: var(--accent-tomato) !important;
+            font-weight: 700;
+        }
+
+        .screenshot-container {
+            flex: 0 0 46%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .screenshot-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 71, 87, 0.2);
+        }
+
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Enemy & Weapon Cards */
+        .roster-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .roster-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 16px;
+            padding: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .roster-box:hover {
+            background: rgba(255, 71, 87, 0.06);
+            border-color: rgba(255, 71, 87, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .roster-box h4 {
+            font-size: 1.05rem;
+            color: var(--accent-crust);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roster-box p {
+            font-size: 0.92rem !important;
+            line-height: 1.5 !important;
+            color: var(--text-body);
+        }
+
+        /* Controls Panel */
+        .controls-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            padding: 10px 16px;
+            border-radius: 12px;
+        }
+
+        .key-badge {
+            background: #241416;
+            color: var(--accent-tomato);
+            border: 1px solid rgba(255, 71, 87, 0.35);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
+            min-width: 65px;
+            text-align: center;
+        }
+
+        .control-desc {
+            font-size: 0.95rem;
+            color: var(--text-body);
+        }
+
+        .control-desc strong {
+            color: var(--text-main);
+        }
+
+        /* Dual Gallery Card */
+        .gallery-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--accent-tomato);
+            box-shadow: 0 15px 35px rgba(255, 71, 87, 0.25);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Bottom Action Callout */
+        .action-banner {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.14) 0%, rgba(255, 165, 2, 0.06) 100%);
+            border: 1px solid rgba(255, 71, 87, 0.35);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .action-banner h3 {
+            font-size: 2.2rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .action-banner p {
+            max-width: 620px;
+            color: var(--text-body);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-body);
+            opacity: 0.7;
+            padding-bottom: 2rem;
+        }
+
+        footer a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent-tomato);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .card, .card.reverse {
+                flex-direction: column;
+                padding: 1.75rem;
+                gap: 1.75rem;
+            }
+            .screenshot-container {
+                width: 100%;
+                flex: none;
+            }
+            .roster-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: flex-start;
+            }
+            h1 {
+                font-size: 2.6rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.1rem; }
+            .tagline { font-size: 1.05rem; }
+            .game-icon { width: 120px; height: 120px; border-radius: 28px; }
+            body { padding: 1.2rem; }
+            .hero-cta { width: 100%; justify-content: center; }
+            .action-banner h3 { font-size: 1.7rem; }
+        }
+    </style>
 </head>
-<body style="background:#120A0B; color:#fff; font-family:sans-serif; text-align:center; padding-top:20vh;">
-    <p>Redirecting to <a href="grandma-pina.html" style="color:#FF4757;">Nonna vs Food Crimes</a>...</p>
+<body>
+    <div class="top-bar">
+        <a href="index.html" class="back-btn" title="Back to Later Night Lab">
+            <img src="LNL icon.webp" alt="Later Night Lab Logo">
+        </a>
+        <div class="header-links">
+            <a href="https://laternightlab.itch.io/nonna-vs-food-crimines" class="link-box primary" target="_blank" rel="noopener">
+                <span>▶</span> Play on Itch.io
+            </a>
+            <span class="badge-pill highlight">HTML5 Browser</span>
+            <span class="badge-pill green">Mobile Ready</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="game-icon-wrap">
+            <div class="game-icon-glow"></div>
+            <img src="NVFC-icon.webp" alt="Nonna vs Food Crimes Logo" class="game-icon">
+        </div>
+        
+        <h1>Nonna vs Food Crimes</h1>
+        <p class="tagline">Nonna has had enough of culinary abominations. Defend the kitchen against relentless hordes of food crimes!</p>
+        
+        <div class="badge-list">
+            <span class="badge-pill highlight">Action Roguelite</span>
+            <span class="badge-pill">Survivors-like</span>
+            <span class="badge-pill green">Godot 4 Engine</span>
+            <span class="badge-pill">3D-Rendered Cartoon Sprites</span>
+            <span class="badge-pill">5 Languages</span>
+        </div>
+
+        <a href="https://laternightlab.itch.io/nonna-vs-food-crimines" class="hero-cta" target="_blank" rel="noopener">
+            <span>🍝</span> Defend the Kitchen on Itch.io
+        </a>
+    </header>
+
+    <main class="main-column">
+        <!-- CARD 1: The Invasion (screenshot dx) -->
+        <article class="card">
+            <div class="card-content">
+                <h2>The Kitchen Under Siege</h2>
+                <p>
+                    Rebel ingredients have overrun Nonna's sacred kitchen: hopping dough balls that slam the floor, molten mozzarella puddles, aggressive ham cubes hurling toothpick darts, and sneaky pineapples launching wedges.
+                    <br><br>
+                    Leading the uprising is the darkest culinary crime in human history: <strong class="highlight-text">The Giant Hawaiian Pizza</strong>. Guide Nonna as she bobs and weaves through the kitchen counters while her auto-attacking arsenal dishes out swift justice!
+                </p>
+            </div>
+            <div class="screenshot-container">
+                <img src="NVFC-screenshot2.webp" alt="Nonna fighting hordes of food crimes">
+            </div>
+        </article>
+
+        <!-- CARD 2: Arsenal & Upgrades (screenshot sx) -->
+        <article class="card reverse">
+            <div class="card-content">
+                <h2>Tradition's Heavy Arsenal</h2>
+                <p>
+                    Survive waves of ingredients to level up and choose game-changing upgrades on the fly. Master Nonna's iconic culinary weapons:
+                </p>
+                <div class="roster-grid">
+                    <div class="roster-box">
+                        <h4><span>🩴</span> La Pantofola (Flying Slipper)</h4>
+                        <p>Hurls across the room and boomerangs straight back, piercing multiple enemies on each throw.</p>
+                    </div>
+                    <div class="roster-box">
+                        <h4><span>🥖</span> The Rolling Pin</h4>
+                        <p>Spins relentlessly around Nonna in an impenetrable orbit, crushing incoming melee attackers.</p>
+                    </div>
+                    <div class="roster-box">
+                        <h4><span>🧆</span> Explosive Meatballs</h4>
+                        <p>Fires fiery Italian meatballs directly ahead that detonate on impact with satisfying area damage.</p>
+                    </div>
+                    <div class="roster-box">
+                        <h4><span>💥</span> Nonna Siciliana & Arancini</h4>
+                        <p>Defeat the Hawaiian Pizza boss to unlock the legendary Sicilian Nonna and her devastating explosive arancini!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="NVFC-screenshot3.webp" alt="La Dispensa - The Pantry Upgrade Shop">
+            </div>
+        </article>
+
+        <!-- CARD 3: Roguelite Loop & Mechanics (screenshot dx) -->
+        <article class="card">
+            <div class="card-content">
+                <h2>Roguelite Recipes & The Pantry</h2>
+                <p>
+                    <strong>Each recipe is a complete run:</strong> Nonna preserves her levels, weapons, and upgrade synergies from one dish to the next. Duck behind sturdy kitchen islands and prep counters to block straight-line projectiles!
+                    <br><br>
+                    Collect coins from fallen food crimes to visit <strong>La Dispensa (The Pantry)</strong> between runs, unlocking permanent stat upgrades, extra health, faster cooking speed, and secret family techniques.
+                </p>
+                <div class="controls-list">
+                    <div class="control-row">
+                        <span class="key-badge">WASD / Arrow Keys</span>
+                        <span class="control-desc"><strong>Move Nonna</strong> around kitchen tables to dodge projectiles</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">Mouse</span>
+                        <span class="control-desc"><strong>Menus & Upgrade Cards:</strong> select your recipe perks</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key-badge">Touch Joystick</span>
+                        <span class="control-desc"><strong>Full Mobile Support:</strong> smooth virtual joystick in portrait or landscape</span>
+                    </div>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="NVFC-screenshot1.webp" alt="Nonna vs Food Crimes in-game action">
+            </div>
+        </article>
+
+        <!-- CARD 4: Visual Showcase Gallery -->
+        <section class="gallery-card">
+            <h2>Hand-Crafted Italian Flavor</h2>
+            <p style="color: var(--text-body); max-width: 650px; margin: 0 auto 1.5rem auto;">
+                Created with love in Godot 4, featuring 3D-rendered cartoon sprites modeled in Blender and an authentic, high-energy Italian soundtrack.
+            </p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="NVFC-screenshot4.webp" alt="Recipe Selection Screen">
+                </div>
+                <div class="gallery-item">
+                    <img src="NVFC-cover.webp" alt="Nonna vs Food Crimes Key Art">
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Banner -->
+        <section class="action-banner">
+            <h3>Pineapple on Pizza Must Be Stopped.</h3>
+            <p>Grab your rolling pin and help Nonna restore honor to Italian cuisine. Play directly in your browser with zero installs!</p>
+            <a href="https://laternightlab.itch.io/nonna-vs-food-crimines" class="hero-cta" target="_blank" rel="noopener">
+                <span>🍕</span> Play Nonna vs Food Crimes on Itch.io
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2026 LATERNIGHTLAB — A project by MrGamer92
+        <div style="margin-top: 0.8rem;"><a href="privacy-nonna-vs-food-crimes.html">Privacy – Nonna vs Food Crimes</a></div>
+    </footer>
 </body>
 </html>
