@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa Rooftop Rush - Later Night Lab</title>
+    <meta name="description" content="One night. Ten chimneys. Before dawn. A free 3D lane runner across snowy Christmas Eve rooftops for Windows PC.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        /*
+         * STORE FLAG: when the game is live on the Microsoft Store,
+         * change data-store-live="false" to "true" on <body>.
+         * The download buttons then become clickable and say "Get it".
+         */
+        :root {
+            --bg-color: #070B1A;
+            --night: #0E1630;
+            --card-bg: rgba(14, 22, 48, 0.82);
+            --card-hover: rgba(20, 30, 62, 0.92);
+            --gold: #FCD34D;
+            --gold-deep: #F59E0B;
+            --santa-red: #E11D2E;
+            --santa-red-deep: #B91C1C;
+            --gift-green: #22C55E;
+            --moon: #DCEBFF;
+            --text-main: #F8FAFC;
+            --text-body: #A5B4CF;
+            --glass-border: rgba(252, 211, 77, 0.2);
+            --glass-border-subtle: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.65), 0 0 24px -6px rgba(96, 165, 250, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 80% 8%, rgba(147, 197, 253, 0.22) 0%, transparent 32%),
+                radial-gradient(circle at 12% 40%, rgba(225, 29, 46, 0.07) 0%, transparent 40%),
+                radial-gradient(circle at 70% 85%, rgba(34, 197, 94, 0.06) 0%, transparent 45%),
+                linear-gradient(180deg, #0B1330 0%, var(--bg-color) 60%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Falling snow: two layered dot fields drifting down */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            inset: -100% 0 0 0;
+            height: 200%;
+            pointer-events: none;
+            z-index: -1;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1.5px 1.5px at 90px 120px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2.5px 2.5px at 160px 60px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.5px 1.5px at 230px 170px, rgba(255,255,255,0.5), transparent);
+            background-size: 260px 220px;
+            animation: snow 28s linear infinite;
+            opacity: 0.35;
+        }
+        body::after {
+            background-size: 380px 340px;
+            animation-duration: 18s;
+            opacity: 0.25;
+            filter: blur(0.6px);
+        }
+        @keyframes snow { from { transform: translateY(0); } to { transform: translateY(50%); } }
+        @media (prefers-reduced-motion: reduce) {
+            body::before, body::after { animation: none; }
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 1.5rem auto;
+        }
+        .back-btn {
+            display: inline-flex;
+            padding: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .back-btn:hover {
+            border-color: var(--gold);
+            background: rgba(252, 211, 77, 0.12);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(252, 211, 77, 0.25);
+        }
+        .back-btn img { width: 56px; height: 56px; border-radius: 12px; display: block; }
+        .header-links { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        /* Hero */
+        header {
+            text-align: center;
+            margin: 1rem auto 3.5rem auto;
+            max-width: 860px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-icon-wrap { position: relative; display: inline-block; margin-bottom: 1.4rem; }
+        .game-icon-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 150%; height: 150%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(147, 197, 253, 0.35) 0%, rgba(225, 29, 46, 0.12) 45%, transparent 70%);
+            filter: blur(18px);
+            pointer-events: none;
+        }
+        .game-icon {
+            width: 168px; height: 168px;
+            border-radius: 38px;
+            object-fit: cover;
+            position: relative;
+            border: 3px solid rgba(252, 211, 77, 0.55);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(252, 211, 77, 0.2);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .game-icon:hover { transform: scale(1.03) rotate(-1.5deg); border-color: var(--gold); }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(252, 211, 77, 0.45);
+            background: rgba(252, 211, 77, 0.08);
+            color: var(--gold);
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.02;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 22px rgba(0, 0, 0, 0.8);
+        }
+        h1 .gold { color: var(--gold); display: block; }
+
+        .subtitle-it {
+            font-size: 0.95rem;
+            color: var(--text-body);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        .tagline {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--moon);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            max-width: 680px;
+        }
+
+        .badge-list { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+        .badge-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-body);
+        }
+        .badge-pill.highlight { background: rgba(252, 211, 77, 0.12); border-color: rgba(252, 211, 77, 0.4); color: var(--gold); }
+        .badge-pill.red { background: rgba(225, 29, 46, 0.14); border-color: rgba(225, 29, 46, 0.45); color: #FCA5A5; }
+        .badge-pill.green { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.4); color: #86EFAC; }
+
+        /* CTA: styled after the in-game "PLAY RUN" button */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(180deg, #EF2B3C 0%, var(--santa-red-deep) 100%);
+            color: #FFFFFF;
+            border: 2px solid var(--gold);
+            padding: 15px 36px;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(225, 29, 46, 0.45), 0 0 18px rgba(252, 211, 77, 0.25);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(225, 29, 46, 0.6), 0 0 26px rgba(252, 211, 77, 0.4);
+        }
+        .hero-cta svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+        /* Store flag handling */
+        .store-live, .store-soon { display: inline; }
+        body[data-store-live="false"] .store-live { display: none; }
+        body[data-store-live="true"] .store-soon { display: none; }
+        body[data-store-live="false"] .store-cta {
+            background: rgba(14, 22, 48, 0.85);
+            color: var(--gold);
+            border: 2px dashed rgba(252, 211, 77, 0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            pointer-events: none;
+            cursor: default;
+        }
+        .cta-note { margin-top: 0.9rem; font-size: 0.9rem; color: var(--text-body); }
+        body[data-store-live="true"] .cta-note.store-soon { display: none; }
+
+        /* Main column and cards */
+        .main-column { display: flex; flex-direction: column; gap: 2.5rem; max-width: 1080px; width: 100%; margin: 0 auto; }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+        .card:hover { border-color: rgba(252, 211, 77, 0.38); background: var(--card-hover); transform: translateY(-2px); }
+        .card.reverse { flex-direction: row-reverse; }
+        .card-content { flex: 1; min-width: 0; }
+
+        h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 1.1rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h2::before { content: "✦"; font-size: 1rem; color: var(--gold); text-shadow: 0 0 10px rgba(252, 211, 77, 0.7); }
+        .gallery-card h2, .action-banner h2 { justify-content: center; }
+
+        .card p { line-height: 1.8; color: var(--text-body); font-size: 1.05rem; }
+        .card p strong { color: var(--text-main); }
+        .red-text { color: #FCA5A5 !important; font-weight: 800; }
+        .green-text { color: #86EFAC !important; font-weight: 800; }
+        .gold-text { color: var(--gold) !important; font-weight: 800; }
+
+        .screenshot-container {
+            flex: 0 0 48%;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.55);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .screenshot-container:hover { transform: scale(1.02); box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 22px rgba(147, 197, 253, 0.25); }
+        .screenshot-container img { width: 100%; height: auto; display: block; }
+
+        /* Stats strip */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.6rem;
+        }
+        .stat {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 14px;
+            padding: 0.9rem 0.6rem;
+            text-align: center;
+        }
+        .stat b { display: block; font-family: 'Fredoka', sans-serif; font-size: 1.45rem; color: var(--text-main); white-space: nowrap; }
+        .stat span { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text-body); }
+
+        /* Feature grid */
+        .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; margin-top: 1.5rem; }
+        .feature-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            border-radius: 16px;
+            padding: 1.1rem 1.2rem;
+            transition: all 0.2s ease;
+        }
+        .feature-box:hover { background: rgba(252, 211, 77, 0.06); border-color: rgba(252, 211, 77, 0.28); transform: translateY(-2px); }
+        .feature-box h4 { font-size: 1.02rem; color: var(--gold); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 8px; }
+        .feature-box p { font-size: 0.92rem !important; line-height: 1.5 !important; }
+
+        /* Grades */
+        .grades { display: flex; gap: 10px; margin-top: 1.4rem; flex-wrap: wrap; }
+        .grade {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            background: #0B1224;
+            border: 2px solid;
+        }
+        .grade.s { color: var(--gold); border-color: var(--gold); box-shadow: 0 0 14px rgba(252, 211, 77, 0.5); }
+        .grade.a { color: #4ADE80; border-color: #22C55E; }
+        .grade.b { color: #38BDF8; border-color: #0EA5E9; }
+        .grade.c { color: #FB923C; border-color: #EA580C; }
+        .grade.d { color: #F87171; border-color: #DC2626; }
+
+        /* Controls */
+        .controls-list { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.2rem; }
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border-subtle);
+            padding: 10px 16px;
+            border-radius: 12px;
+        }
+        .key-badge {
+            background: #111A33;
+            color: var(--gold);
+            border: 1px solid rgba(252, 211, 77, 0.35);
+            font-weight: 800;
+            font-size: 0.82rem;
+            padding: 4px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
+            min-width: 150px;
+            text-align: center;
+        }
+        .key-badge.red { color: #FCA5A5; border-color: rgba(225, 29, 46, 0.55); }
+        .key-badge.green { color: #86EFAC; border-color: rgba(34, 197, 94, 0.5); }
+        .control-desc { font-size: 0.95rem; color: var(--text-body); }
+        .control-desc strong { color: var(--text-main); }
+
+        /* Gallery */
+        .gallery-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+        .gallery-card > p { color: var(--text-body); max-width: 650px; margin: 0 auto; line-height: 1.6; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 1.5rem; }
+        .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .gallery-item:hover { transform: translateY(-4px) scale(1.02); border-color: var(--gold); box-shadow: 0 15px 35px rgba(252, 211, 77, 0.2); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* Bottom banner */
+        .action-banner {
+            background: linear-gradient(135deg, rgba(225, 29, 46, 0.14) 0%, rgba(14, 22, 48, 0.6) 50%, rgba(34, 197, 94, 0.1) 100%);
+            border: 1px solid rgba(252, 211, 77, 0.35);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.1rem;
+        }
+        .action-banner h2 { font-size: 2.2rem; color: var(--text-main); margin-bottom: 0; }
+        .action-banner h2::before { display: none; }
+        .action-banner > p { max-width: 620px; color: var(--text-body); font-size: 1.08rem; line-height: 1.6; }
+        .fine-print { font-size: 0.88rem !important; opacity: 0.85; }
+        .fine-print a { color: var(--gold); }
+
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-body);
+            opacity: 0.7;
+            padding-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .card, .card.reverse { flex-direction: column; padding: 1.75rem; gap: 1.75rem; }
+            .screenshot-container { width: 100%; flex: none; }
+            .feature-grid, .gallery-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 3rem; }
+        }
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            h1 { font-size: 2.3rem; }
+            .tagline { font-size: 1.08rem; }
+            .game-icon { width: 124px; height: 124px; border-radius: 28px; }
+            .hero-cta { width: 100%; padding: 14px 18px; font-size: 1rem; }
+            .gallery-card, .action-banner { padding: 1.75rem 1.2rem; }
+            .action-banner h2 { font-size: 1.6rem; }
+            .control-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .key-badge { min-width: 0; }
+        }
+    </style>
+</head>
+<body data-store-live="false">
+    <div class="top-bar">
+        <a href="index.html" class="back-btn" title="Back to Later Night Lab">
+            <img src="LNL icon.webp" alt="Later Night Lab Logo">
+        </a>
+        <div class="header-links">
+            <span class="badge-pill highlight">Windows PC</span>
+            <span class="badge-pill">Free</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="game-icon-wrap">
+            <div class="game-icon-glow"></div>
+            <img src="SRR-icon.webp" alt="Santa Rooftop Rush icon: Santa running across a snowy roof under the moon" class="game-icon">
+        </div>
+        <span class="eyebrow">✦ North Pole Dispatch ✦</span>
+        <h1><span class="gold">Santa</span>Rooftop Rush</h1>
+        <p class="subtitle-it">Babbo Natale: Corsa sui Tetti</p>
+        <p class="tagline">One night. Ten chimneys. Before dawn.</p>
+
+        <div class="badge-list">
+            <span class="badge-pill highlight">3D Lane Runner</span>
+            <span class="badge-pill">Godot 4.7 Engine</span>
+            <span class="badge-pill red">Christmas Eve</span>
+            <span class="badge-pill green">PEGI 3 · USK 0</span>
+            <span class="badge-pill">No In-App Purchases</span>
+        </div>
+
+        <a href="https://apps.microsoft.com/detail/9MTFKC2QBFC2" class="hero-cta store-cta" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10 4.5v7H3zm0 13 7 1v-7H3zm8 1.15L21 21v-8.5H11zM11 4.35 21 3v8.5H11z"/></svg>
+            <span class="store-live">Get it on Microsoft Store</span>
+            <span class="store-soon">Coming Soon to Microsoft Store</span>
+        </a>
+        <p class="cta-note store-soon">Free on Windows 10/11. The Store page opens as soon as the game is published.</p>
+    </header>
+
+    <main class="main-column">
+        <!-- Intro -->
+        <article class="card">
+            <div class="card-content">
+                <h2>The Longest Night</h2>
+                <p>
+                    It's 23:00 on Christmas Eve and the whole city is asleep. <strong>Santa Rooftop Rush</strong> is a third-person 3D lane runner across snow-covered rooftops: Santa sprints forward on his own, and it's up to you to dodge, jump, slide and fling presents down every chimney before the sun comes up.
+                    <br><br>
+                    <strong class="gold-text">The clock is the real enemy:</strong> dawn breaks at 06:00. Fall off the roofs or let the sun rise before the finish line, and the night's mission is lost.
+                </p>
+                <div class="stats">
+                    <div class="stat"><b>329 m</b><span>Rooftop route</span></div>
+                    <div class="stat"><b>17→26</b><span>m/s top speed</span></div>
+                    <div class="stat"><b>10</b><span>Chimneys</span></div>
+                    <div class="stat"><b>06:00</b><span>Dawn deadline</span></div>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="SRR-screenshot2.webp" alt="Santa running along a snowy rooftop under a full moon, with the night clock and grade bar on screen" loading="lazy">
+            </div>
+        </article>
+
+        <!-- Deliveries -->
+        <article class="card reverse">
+            <div class="card-content">
+                <h2>Right Gift, Right Chimney</h2>
+                <p>
+                    Chimneys alternate along the edges of the route. When one comes close, the delivery window opens: throw the <span class="red-text">◆ red gift</span> to the left, the <span class="green-text">▲ green gift</span> to the right. Every correct delivery is worth <strong>+200 points</strong>.
+                </p>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h4><span>🎁</span> Delivery Window</h4>
+                        <p>The HUD tells you which gift each chimney is waiting for. A wrong color costs you the points, never the time.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><span>❄️</span> Rooftop Hazards</h4>
+                        <p>Change lane around air conditioners, jump low fences, slide under cables strung with festive lights.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><span>⏰</span> Night Clock</h4>
+                        <p>Only crashing into obstacles costs time: −3.5 seconds of night per hit. Keep it clean to beat the sunrise.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4><span>📈</span> Live Forecast</h4>
+                        <p>The festive cable bar projects your final score in real time: deliveries plus the dawn speed bonus.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="SRR-screenshot3.webp" alt="A brick chimney on the left edge of the roof with a GIFT! prompt above it" loading="lazy">
+            </div>
+        </article>
+
+        <!-- Grades -->
+        <article class="card">
+            <div class="card-content">
+                <h2>Chase the S Rank</h2>
+                <p>
+                    Reach the finish line and your night is graded from <strong>D</strong> to <strong class="gold-text">S</strong>, plus a dawn speed bonus for beating the sunrise. Your best grade and high score are saved locally on your PC, so the only rival is last night's Santa.
+                </p>
+                <div class="grades" aria-label="Grades from S to D">
+                    <span class="grade s">S</span>
+                    <span class="grade a">A</span>
+                    <span class="grade b">B</span>
+                    <span class="grade c">C</span>
+                    <span class="grade d">D</span>
+                </div>
+            </div>
+            <div class="screenshot-container">
+                <img src="SRR-screenshot1.webp" alt="Santa Rooftop Rush title screen with Play Run, Controls and Audio Settings buttons over a moonlit city" loading="lazy">
+            </div>
+        </article>
+
+        <!-- Controls -->
+        <section class="gallery-card" style="text-align:left;">
+            <h2 style="justify-content:flex-start;">Controls</h2>
+            <p style="margin:0;">Keyboard and mouse, made for quick reflexes. Restart instantly at any time.</p>
+            <div class="controls-list">
+                <div class="control-row">
+                    <span class="key-badge">A / D · ← →</span>
+                    <span class="control-desc"><strong>Change lane</strong> across the three rooftop lanes</span>
+                </div>
+                <div class="control-row">
+                    <span class="key-badge">W · Space · ↑</span>
+                    <span class="control-desc"><strong>Jump</strong> over low obstacles and fences</span>
+                </div>
+                <div class="control-row">
+                    <span class="key-badge">S · Shift · ↓</span>
+                    <span class="control-desc"><strong>Slide</strong> under cables and festive light strings</span>
+                </div>
+                <div class="control-row">
+                    <span class="key-badge red">Q · Left Click</span>
+                    <span class="control-desc"><strong>Red gift ◆</strong> to the left-side chimney</span>
+                </div>
+                <div class="control-row">
+                    <span class="key-badge green">E · Enter · Right Click</span>
+                    <span class="control-desc"><strong>Green gift ▲</strong> to the right-side chimney</span>
+                </div>
+                <div class="control-row">
+                    <span class="key-badge">Esc · P</span>
+                    <span class="control-desc"><strong>Pause</strong> and audio settings</span>
+                </div>
+                <div class="control-row">
+                    <span class="key-badge">R</span>
+                    <span class="control-desc"><strong>Restart</strong> the run at any moment</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section class="gallery-card">
+            <h2>Snapshots from the Rooftops</h2>
+            <p>Built in Godot 4.7 with low-poly 3D models made in Blender, under a moonlit winter sky.</p>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="SRR-screenshot1.webp" alt="Title screen" loading="lazy"></div>
+                <div class="gallery-item"><img src="SRR-screenshot2.webp" alt="Running on the snowy roof" loading="lazy"></div>
+                <div class="gallery-item"><img src="SRR-screenshot3.webp" alt="Approaching a chimney for a delivery" loading="lazy"></div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="action-banner">
+            <h2>Ready for the Night Shift?</h2>
+            <p>Lace up Santa's boots and race the sunrise across the city rooftops. Free on Windows 10/11.</p>
+            <a href="https://apps.microsoft.com/detail/9MTFKC2QBFC2" class="hero-cta store-cta" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10 4.5v7H3zm0 13 7 1v-7H3zm8 1.15L21 21v-8.5H11zM11 4.35 21 3v8.5H11z"/></svg>
+                <span class="store-live">Get it on Microsoft Store</span>
+                <span class="store-soon">Coming Soon to Microsoft Store</span>
+            </a>
+            <p class="fine-print">
+                Free, no in-app purchases, no personal data collected. Rated PEGI 3 / USK 0.<br>
+                Published by LaterNightLab · Windows 10/11 only.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2026 LATERNIGHTLAB — A project by MrGamer92
+    </footer>
+</body>
+</html>
