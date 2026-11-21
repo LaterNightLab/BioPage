@@ -1,0 +1,16 @@
+/* Privacy pages: readable long-form layout on the shared site look. */
+.privacy { max-width: 820px; margin: 0 auto; padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem) 0; }
+.privacy-head { margin-bottom: 2rem; }
+.privacy-head h1 { font-size: clamp(2rem, 6vw, 3rem); margin-bottom: .5rem; }
+.privacy-meta { color: var(--muted); margin: 0; }
+.privacy-card { background: var(--glass); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.25rem, 4vw, 2.5rem); }
+.privacy-card section { margin: 0; }
+.privacy-card section + section { margin-top: 1.5rem; }
+.privacy-card h2 { font-size: 1.3rem; margin: 2rem 0 .7rem; color: var(--cyan); }
+.privacy-card > h2:first-child, .privacy-card section:first-child h2 { margin-top: 0; }
+.privacy-card p, .privacy-card li { color: var(--text); opacity: .88; }
+.privacy-card p { margin: 0 0 1rem; }
+.privacy-card ul { margin: 0 0 1.25rem; padding-left: 1.2rem; }
+.privacy-card li { margin-bottom: .6rem; }
+.privacy-card strong { color: var(--amber); font-weight: 700; }
+.privacy-card a { color: var(--cyan); }
