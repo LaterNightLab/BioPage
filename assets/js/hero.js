@@ -62,13 +62,14 @@
   var btn = document.getElementById('motion-btn');
   if (typeof window.DeviceOrientationEvent !== 'undefined') {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS: permission only from an explicit tap
-      if (btn) {
+      // iOS: permission only from an explicit tap, and only on touch devices
+      if (btn && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
         btn.hidden = false;
         btn.addEventListener('click', function () {
           DeviceOrientationEvent.requestPermission().then(function (res) {
-            if (res === 'granted') { listenOrientation(); btn.hidden = true; }
-          }).catch(function () { btn.hidden = true; });
+            if (res === 'granted') listenOrientation();
+            btn.hidden = true;
+          }, function () { btn.hidden = true; });
         });
       }
     } else {
@@ -80,6 +81,7 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
+      hero.classList.toggle('hero-paused', !visible);
       if (visible) { if (cx !== tx || cy !== ty) kick(); }
       else if (raf) { cancelAnimationFrame(raf); raf = 0; running = false; }
     }).observe(hero);

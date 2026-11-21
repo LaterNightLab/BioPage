@@ -87,7 +87,7 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; margin: 0 0 .5e
 }
 .btn:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .12); }
 .btn:focus-visible, .nav a:focus-visible, .tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.btn-primary { background: var(--accent); border-color: transparent; color: #0a0a12; }
+.btn-primary { background: var(--accent); border-color: transparent; color: var(--accent-ink, #0a0a12); }
 .btn-primary:hover { background: var(--accent); filter: brightness(1.1); }
 .btn.is-disabled { cursor: default; pointer-events: none; background: transparent; color: var(--accent); border: 1px dashed var(--accent); }
 
@@ -125,6 +125,10 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; margin: 0 0 .5e
 /* ===== Shared store pieces (home rows + title page "More titles") ===== */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 html, body { overflow-x: clip; }
+@media (max-width: 520px) {
+  .nav-brand span { display: none; }
+  .nav-links { gap: .8rem; font-size: .92rem; }
+}
 .store-heading { font-size: clamp(1.4rem, 3.6vw, 2rem); margin: 0 0 .8rem; }
 .badges { display: flex; flex-wrap: wrap; gap: .4rem; }
 .badge {

@@ -310,8 +310,7 @@
   }
 
   window.LNL_STORE = {
-    renderFeatured: renderFeatured, renderRows: renderRows,
-    tile: tile, badges: badges, badgeEls: badgeEls, art: art, fallbackArt: fallbackArt, primaryCta: primaryCta
+    tile: tile, badges: badges, art: art, fallbackArt: fallbackArt, primaryCta: primaryCta
   };
 
   function init() {

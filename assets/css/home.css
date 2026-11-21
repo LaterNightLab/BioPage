@@ -42,11 +42,6 @@
 /* Static composition: orbiters sit at their drawn position (translate undoes the inner centering) */
 .orbiter { translate: var(--cx) var(--cy); }
 
-@media (max-width: 520px) {
-  .nav-brand span { display: none; }
-  .nav-links { gap: .8rem; font-size: .92rem; }
-}
-
 @media (prefers-reduced-motion: no-preference) {
   /* Orbit draw-in + glow breathing */
   #orbit-path { stroke-dasharray: 1; animation: orbit-draw 1.6s cubic-bezier(.65, 0, .35, 1) both; }
@@ -64,8 +59,7 @@
   @keyframes core-pulse { from { opacity: .8; } to { opacity: 1; } }
 
   /* Sparks drift up-right, then hard reset */
-  .sp, .sp-all { animation: spark 2.8s cubic-bezier(.22, 1, .36, 1) infinite; }
-  .sp { animation-delay: calc(var(--i) * .18s); }
+  .sp { animation: spark 2.8s cubic-bezier(.22, 1, .36, 1) infinite; animation-delay: calc(var(--i) * .18s); }
   @keyframes spark {
     from { transform: translate(0, 0); opacity: 1; }
     to { transform: translate(10px, -10px); opacity: .3; }
@@ -78,6 +72,12 @@
   /* Wordmark sweep: each letter's glow brightens for 0.6 s of a 6 s cycle */
   .letter .glow { animation: letter-glow 6s cubic-bezier(.5, 1, .89, 1) infinite; animation-delay: calc(var(--i) * .12s); opacity: .55; }
   @keyframes letter-glow { 0% { opacity: .55; } 5% { opacity: 1; } 10%, 100% { opacity: .55; } }
+
+  /* Touch phones: letters stay static at full glow (fewer filter repaints) */
+  @media (pointer: coarse) { .letter .glow { animation: none; opacity: 1; } }
+
+  /* Off-screen hero: freeze every animation (class set by hero.js) */
+  .hero-paused, .hero-paused * { animation-play-state: paused !important; }
 
   /* Scroll cue bob */
   .cue-arrow { animation: cue 2.4s ease-in-out infinite; }

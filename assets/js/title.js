@@ -1,5 +1,5 @@
 /* Title page renderer: renderTitle(slug) fills <main id="title-root"> from window.LNL_TITLES.
-   Plain script. Uses LNL (site.js) and, when present, LNL_STORE.tile (store.js) for "More titles".
+   Plain script. Uses LNL (site.js) and LNL_STORE (store.js: art, fallbackArt, primaryCta, badges, tile); store.js must load first.
    DOM is built with textContent/setAttribute only. Animations touch transform/opacity only. */
 (function () {
   var CYCLE_MS = 3800;
@@ -27,20 +27,11 @@
     return list(window.LNL_TITLES).filter(function (t) { return t.slug === slug; })[0];
   }
 
-  function fallbackArt(t, cls) {
-    var d = el('div', 'art-fallback ' + (cls || ''), { 'aria-hidden': 'true' });
-    d.style.setProperty('--accent', t.accent);
-    d.appendChild(el('span', null, null, initial(t)));
-    return d;
-  }
-
+  var STORE = window.LNL_STORE || {};
+  var fallbackArt = STORE.fallbackArt;
   function img(t, file, alt, w, h, cls, eager) {
-    var i = el('img', cls, { alt: alt, width: w, height: h, decoding: 'async' });
-    if (!eager) i.loading = 'lazy';
-    i.addEventListener('error', function () {
-      if (i.parentNode) i.parentNode.replaceChild(fallbackArt(t, cls), i);
-    });
-    i.src = src(file);
+    var i = STORE.art(t, file, w, h, cls, eager);
+    i.alt = alt;
     return i;
   }
 
@@ -50,13 +41,7 @@
     return a;
   }
 
-  function primaryCta(t) {
-    var p = t.primary;
-    if (p.live === false) {
-      return el('span', 'btn btn-primary is-disabled', { 'aria-disabled': 'true' }, p.soonLabel || 'Coming soon');
-    }
-    return link(p, 'btn btn-primary');
-  }
+  var primaryCta = STORE.primaryCta;
 
   function ctaGroup(t, withSecondary) {
     var wrap = el('div', 't-cta');
@@ -75,7 +60,7 @@
   }
 
   function platformBadges(t) {
-    var names = (window.LNL_STORE && window.LNL_STORE.badges) ? window.LNL_STORE.badges(t) : list(t.platforms);
+    var names = (STORE.badges) ? STORE.badges(t) : list(t.platforms);
     if (!names.length) return null;
     var wrap = el('div', 'badges', { 'aria-label': 'Platforms' });
     names.forEach(function (b) { wrap.appendChild(el('span', 'badge', null, b)); });
@@ -366,7 +351,7 @@
     var s = el('section', 'section t-more store-row', { 'aria-labelledby': 't-more-heading' });
     s.appendChild(el('h2', 'store-heading', { id: 't-more-heading' }, 'More titles'));
     var row = el('div', 'row', { role: 'group', 'aria-labelledby': 't-more-heading' });
-    var make = window.LNL_STORE && window.LNL_STORE.tile;
+    var make = STORE.tile;
     if (!make) return null;
     others.forEach(function (t) { row.appendChild(make(t)); });
     s.appendChild(row);
