@@ -32,8 +32,7 @@ window.LNL_TITLES = [
     primary: { label: 'Play on itch.io', url: 'https://laternightlab.itch.io/solitaire-pulse' },
     secondary: [
       { label: 'Microsoft Store', url: 'https://apps.microsoft.com/detail/9ND2CRS3P1Q5?hl=neutral&gl=IT&ocid=pdpshare' },
-      { label: 'Game Jolt', url: 'https://gamejolt.com/games/solitarepulse/1051936' },
-      { label: 'Discord', url: 'https://discord.gg/g4S7uSXyVY' }
+      { label: 'Game Jolt', url: 'https://gamejolt.com/games/solitarepulse/1051936' }
     ],
     device: 'desktop',
     platforms: ['Windows', 'Browser', 'Android'],
