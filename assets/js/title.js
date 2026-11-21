@@ -368,6 +368,8 @@
 
   function notFound(root, slug) {
     document.title = 'Title not found - Later Night Lab';
+    document.documentElement.style.removeProperty('--accent');
+    root.style.removeProperty('--accent');
     var s = el('section', 'section t-missing', { 'aria-labelledby': 't-missing-heading' });
     s.appendChild(el('h1', 't-name', { id: 't-missing-heading' }, 'Title not found'));
     s.appendChild(el('p', 't-tagline', null, slug
