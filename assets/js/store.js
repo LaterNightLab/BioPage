@@ -66,13 +66,60 @@
     return list;
   }
 
-  function badgeEls(t) {
-    var wrap = el('span', 'badges');
-    badges(t).forEach(function (b) {
-      var s = el('span', 'badge');
-      s.textContent = b;
-      wrap.appendChild(s);
+  /* Kind badge (Game / App) + device chips: the kind is a solid pill, the
+     destinations are small icon chips so the two never read as the same tag. */
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var ICONS = {
+    monitor: ['M3 5h18v11H3z', 'M8 20h8', 'M12 16v4'],
+    globe: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M3 12h18', 'M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9S9.4 5.6 12 3z'],
+    phone: ['M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z', 'M11 18h2']
+  };
+  function iconFor(name) {
+    var n = String(name).toLowerCase();
+    if (/windows|pc|desktop/.test(n)) return 'monitor';
+    if (/browser|web/.test(n)) return 'globe';
+    return 'phone'; // Android, Mobile, iOS, App
+  }
+  function svgIcon(kind) {
+    var svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '16');
+    svg.setAttribute('height', '16');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    ICONS[kind].forEach(function (d) {
+      var p = document.createElementNS(SVG_NS, 'path');
+      p.setAttribute('d', d);
+      svg.appendChild(p);
     });
+    return svg;
+  }
+  function kindLabel(t) { return t.kind === 'app' ? 'App' : 'Game'; }
+  // Destinations without the words that the kind badge already says.
+  function destinations(t) {
+    return badges(t).filter(function (b) { return !/^(app|game|download)$/i.test(b); });
+  }
+  function platformChips(t, labeled) {
+    var names = destinations(t);
+    if (!names.length) return null;
+    var wrap = el('span', 'platforms' + (labeled ? ' platforms--labeled' : ''), { role: 'list', 'aria-label': 'Available on' });
+    names.forEach(function (n) {
+      var c = el('span', 'plat', { role: 'listitem', title: n });
+      c.appendChild(svgIcon(iconFor(n)));
+      var label = el('span', labeled ? 'plat-label' : 'sr-only');
+      label.textContent = n;
+      c.appendChild(label);
+      wrap.appendChild(c);
+    });
+    return wrap;
+  }
+  function badgeEls(t, labeled) {
+    var wrap = el('span', 'badges');
+    var k = el('span', 'kind-badge kind-' + (t.kind === 'app' ? 'app' : 'game'));
+    k.textContent = kindLabel(t);
+    wrap.appendChild(k);
+    var chips = platformChips(t, labeled);
+    if (chips) wrap.appendChild(chips);
     return wrap;
   }
 
@@ -310,12 +357,14 @@
   }
 
   window.LNL_STORE = {
-    tile: tile, badges: badges, art: art, fallbackArt: fallbackArt, primaryCta: primaryCta
+    tile: tile, badges: badges, badgeEls: badgeEls, art: art, fallbackArt: fallbackArt, primaryCta: primaryCta
   };
 
   function init() {
     var titles = window.LNL_TITLES;
     if (!hasTitles(titles)) return;
+    titles = titles.filter(function (t) { return !t.hidden; });
+    if (!titles.length) return;
     renderFeatured(titles);
     renderRows(titles);
   }

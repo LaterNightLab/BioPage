@@ -131,12 +131,6 @@ html, body { overflow-x: clip; }
 }
 .store-heading { font-size: clamp(1.4rem, 3.6vw, 2rem); margin: 0 0 .8rem; }
 .badges { display: flex; flex-wrap: wrap; gap: .4rem; }
-.badge {
-  font: 600 .72rem var(--font-body); letter-spacing: .04em; text-transform: uppercase;
-  padding: .2rem .55rem; border-radius: 999px;
-  color: var(--text); background: color-mix(in srgb, var(--accent) 22%, rgba(0, 0, 0, .35));
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-}
 .art-fallback {
   display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
   background:
@@ -207,3 +201,21 @@ html, body { overflow-x: clip; }
 .footer-copy { max-width: 1180px; margin: 2rem auto 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
 @media (max-width: 640px) { .footer-inner { grid-template-columns: minmax(0, 1fr); } }
 .badges:empty { display: none; }
+
+/* Kind badge (solid) + platform icon chips (outlined squares): deliberately different shapes. */
+.badges { align-items: center; }
+.kind-badge {
+  font: 700 .72rem var(--font-body); letter-spacing: .08em; text-transform: uppercase;
+  padding: .24rem .65rem; border-radius: 999px;
+  color: var(--accent-ink, #0a0a12); background: var(--accent);
+}
+.kind-app { border-radius: 6px; }
+.platforms { display: inline-flex; gap: .3rem; }
+.plat {
+  display: inline-flex; align-items: center; gap: .35rem; min-width: 1.9rem; height: 1.9rem; padding: 0 .4rem;
+  justify-content: center; border-radius: 8px; color: var(--text);
+  background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .18);
+}
+.plat svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.plat-label { font: 600 .74rem var(--font-body); letter-spacing: .03em; }
+.platforms--labeled .plat { padding: 0 .65rem; }

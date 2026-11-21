@@ -16,6 +16,7 @@
      checksums   [{ label, value }]
      credits     [{ name, role, bio, quote? }]
      privacy     { label, url } (local page)
+     hidden      true = not listed on the home (carousel, rows, noscript lists) nor in "More titles"; the page still works by URL
    primary.live === false: the store page is not published yet; the CTA renders disabled
    with primary.soonLabel and primary.note, but the URL is kept here. */
 window.LNL_TITLES = [
@@ -35,7 +36,7 @@ window.LNL_TITLES = [
       { label: 'Game Jolt', url: 'https://gamejolt.com/games/solitarepulse/1051936' }
     ],
     device: 'desktop',
-    platforms: ['Windows', 'Browser', 'Android'],
+    platforms: ['Windows', 'Android'],
     tags: ['Klondike', 'Spider', '1v1 Online'],
     aboutHeading: 'Welcome to Solitaire Pulse',
     about: [
@@ -301,6 +302,7 @@ window.LNL_TITLES = [
   },
   {
     slug: 'sync-or-sink',
+    hidden: true,
     name: 'Sync or Sink',
     kind: 'game',
     tagline: 'Coming soon from Later Night Lab.',
@@ -318,6 +320,7 @@ window.LNL_TITLES = [
   },
   {
     slug: 'wordfall-veyra',
+    hidden: true,
     name: 'Wordfall: Veyra',
     kind: 'game',
     tagline: 'Coming soon from Later Night Lab.',

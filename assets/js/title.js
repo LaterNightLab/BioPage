@@ -60,11 +60,7 @@
   }
 
   function platformBadges(t) {
-    var names = (STORE.badges) ? STORE.badges(t) : list(t.platforms);
-    if (!names.length) return null;
-    var wrap = el('div', 'badges', { 'aria-label': 'Platforms' });
-    names.forEach(function (b) { wrap.appendChild(el('span', 'badge', null, b)); });
-    return wrap;
+    return STORE.badgeEls(t, true);
   }
 
   function deviceOf(t) {
@@ -346,7 +342,7 @@
 
   /* ---------- More titles ---------- */
   function buildMore(exceptSlug) {
-    var others = list(window.LNL_TITLES).filter(function (t) { return t.slug !== exceptSlug; });
+    var others = list(window.LNL_TITLES).filter(function (t) { return t.slug !== exceptSlug && !t.hidden; });
     if (!others.length) return null;
     var s = el('section', 'section t-more store-row', { 'aria-labelledby': 't-more-heading' });
     s.appendChild(el('h2', 'store-heading', { id: 't-more-heading' }, 'More titles'));
