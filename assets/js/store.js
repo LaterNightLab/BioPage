@@ -47,6 +47,8 @@
   }
 
   function badges(t) {
+    if (Array.isArray(t.platforms) && t.platforms.length) return t.platforms.slice();
+    // Fallback heuristic for titles without explicit platforms.
     var list = [];
     if (t.row === 'browser') list.push('Browser');
     if (t.kind === 'app') list.push('App');
@@ -66,6 +68,20 @@
       wrap.appendChild(s);
     });
     return wrap;
+  }
+
+  // Primary CTA; primary.live === false (store page not published yet) renders a disabled button.
+  function primaryCta(t) {
+    var p = t.primary;
+    if (p.live === false) {
+      var s = el('span', 'btn btn-primary is-disabled', { 'aria-disabled': 'true' });
+      s.textContent = p.soonLabel || 'Coming soon';
+      return s;
+    }
+    var a = el('a', 'btn btn-primary', { href: p.url });
+    a.textContent = p.label;
+    if (isExternal(p.url)) { a.target = '_blank'; a.rel = 'noopener'; }
+    return a;
   }
 
   function pickFeatured(titles) {
@@ -111,9 +127,7 @@
       p.textContent = t.tagline;
       body.appendChild(p);
       var cta = el('div', 'fc-cta');
-      var play = el('a', 'btn btn-primary', { href: t.primary.url });
-      play.textContent = t.primary.label;
-      if (isExternal(t.primary.url)) { play.target = '_blank'; play.rel = 'noopener'; }
+      var play = primaryCta(t);
       var more = el('a', 'btn', { href: t.slug + '.html' });
       more.textContent = 'Details';
       more.setAttribute('aria-label', 'Details: ' + t.name);
@@ -287,7 +301,10 @@
     });
   }
 
-  window.LNL_STORE = { renderFeatured: renderFeatured, renderRows: renderRows };
+  window.LNL_STORE = {
+    renderFeatured: renderFeatured, renderRows: renderRows,
+    tile: tile, badges: badges, badgeEls: badgeEls, art: art, fallbackArt: fallbackArt, primaryCta: primaryCta
+  };
 
   function init() {
     var titles = window.LNL_TITLES;

@@ -1,6 +1,4 @@
 /* Home hero. Only transform/opacity animate (plus the one-shot orbit draw-in). */
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-html, body { overflow-x: clip; }
 
 .hero {
   --px: 0; --py: 0;
@@ -117,21 +115,6 @@ html, body { overflow-x: clip; }
 
 /* ===== Store: featured carousel + rows ===== */
 .store-section { padding-block: clamp(1.5rem, 4vw, 3rem); scroll-margin-top: 58px; }
-.store-heading { font-size: clamp(1.4rem, 3.6vw, 2rem); margin: 0 0 .8rem; }
-.badges { display: flex; flex-wrap: wrap; gap: .4rem; }
-.badge {
-  font: 600 .72rem var(--font-body); letter-spacing: .04em; text-transform: uppercase;
-  padding: .2rem .55rem; border-radius: 999px;
-  color: var(--text); background: color-mix(in srgb, var(--accent) 22%, rgba(0, 0, 0, .35));
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.art-fallback {
-  display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
-  background:
-    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--accent) 70%, #fff 10%), transparent 60%),
-    linear-gradient(145deg, color-mix(in srgb, var(--accent) 55%, #000), color-mix(in srgb, var(--accent) 18%, var(--night)));
-}
-.art-fallback span { font: 700 clamp(3rem, 14vw, 7rem) var(--font-display); color: rgba(255, 255, 255, .85); text-shadow: 0 6px 30px rgba(0, 0, 0, .45); }
 
 /* Carousel */
 .fc { position: relative; --accent: var(--amber); border-radius: calc(var(--radius) + 6px); outline-offset: 4px; }
@@ -190,55 +173,8 @@ html, body { overflow-x: clip; }
 .fc-dot[aria-current] span { background: var(--accent); transform: scale(1.5); }
 .fc-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; border-radius: 8px; }
 
-/* Rows */
-.store-row { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
-.store-row .row {
-  gap: 1.3rem; padding: 1.2rem 1rem 1.8rem; margin: 0 -1rem;
-  scroll-padding-inline: 1rem; scrollbar-width: thin;
-  scroll-snap-type: x mandatory; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
-}
-.store-tile {
-  width: min(250px, 68vw); overflow: visible; background: none; border: 0; box-shadow: none;
-  transform-style: preserve-3d;
-  transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry));
-  translate: 0 0; transition: transform .15s ease-out, translate .25s ease, filter .25s ease;
-}
-.store-tile::before { /* accent glow plate behind the tile */
-  content: ''; position: absolute; inset: 6% 4% 0; border-radius: var(--radius); z-index: -1;
-  background: var(--accent); filter: blur(26px); opacity: .28; transform: translateZ(-30px);
-  transition: opacity .25s ease;
-}
-.store-tile:hover, .store-tile:focus-visible { translate: 0 -8px; }
-.store-tile:hover::before, .store-tile:focus-visible::before { opacity: .55; }
-.tile-media { position: relative; transform-style: preserve-3d; }
-.tile-art {
-  position: relative; aspect-ratio: 4 / 3; overflow: hidden;
-  border-radius: var(--radius) var(--radius) 6px 6px;
-  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
-  background: var(--night-2);
-}
-.tile-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(5, 6, 15, .55), transparent 55%); pointer-events: none; }
-.store-tile .tile-img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
-.tile-chip {
-  position: absolute; left: .7rem; bottom: .7rem; width: 54px; height: 54px; z-index: 2;
-  border-radius: 14px; overflow: hidden; border: 2px solid var(--night);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, .55), 0 0 18px color-mix(in srgb, var(--accent) 50%, transparent);
-  transform: translateZ(40px); background: var(--night-2);
-}
-.tile-chip-img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
-.store-tile .tile-body {
-  position: relative; margin: -.4rem .5rem 0; padding: .8rem .9rem 1rem; z-index: 1;
-  border-radius: 6px 6px var(--radius) var(--radius);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--night-2)), var(--night-2));
-  border: 1px solid var(--line); border-top: 0;
-  transform: translateZ(14px);
-}
-.store-tile .tile-body h3 { font-size: 1.1rem; margin: 0 0 .45rem; }
-.store-tile .art-fallback span { font-size: 4.5rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .fc-track, .fc-glow, .fc-body, .fc-img { transition: none !important; }
   .fc-img, .fc-slide.is-active .fc-img { transform: none; }
-  .store-tile { transform: none; transition: none; }
-  .store-tile:hover, .store-tile:focus-visible { translate: 0 -4px; }
 }
