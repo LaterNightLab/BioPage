@@ -240,14 +240,14 @@ window.LNL_TITLES = [
     icon: 'SRR-icon.webp',
     cover: null,
     shots: ['SRR-screenshot1.webp', 'SRR-screenshot2.webp', 'SRR-screenshot3.webp'],
-    row: 'download',
+    row: 'browser',
     primary: {
       label: 'Get it on Microsoft Store',
       url: 'https://apps.microsoft.com/detail/9MTFKC2QBFC2'
     },
     secondary: [],
     device: 'desktop',
-    platforms: ['Windows'],
+    platforms: ['Browser', 'Windows'],
     tags: ['3D Lane Runner', 'Godot 4.7 Engine', 'Christmas Eve', 'PEGI 3 · USK 0', 'No In-App Purchases', 'Free'],
     stats: [
       { value: '329 m', label: 'Rooftop route' },
