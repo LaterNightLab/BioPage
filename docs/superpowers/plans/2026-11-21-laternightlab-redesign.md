@@ -12,6 +12,8 @@
 
 ## Global Constraints
 
+- Site language is English only: every visible string, label, button, alt/aria-label, empty state and error message (no Italian anywhere in the site).
+
 - No framework and no build step on hosting: static files served by GitHub Pages.
 - No AniCraft export (HTML, Lottie or animated SVG) ships in the site; only values studied in AniCraft, written as CSS/JS.
 - Existing page file names stay: `index.html`, `solitaire-pulse.html`, `master-work.html`, `nonna-vs-food-crimes.html`, `santa-rooftop-rush.html`, `sync-or-sink.html`, `wordfall-veyra.html`, `ballers21.html`, `privacy.html`, `privacy-nonna-vs-food-crimes.html`.
@@ -26,7 +28,7 @@
 ## Review Focus
 
 - Title with no cover or screenshots (Santa Rooftop Rush, Sync or Sink, Wordfall: Veyra): page and card still render with a generated accent placeholder, no broken image.
-- Title with no direct itch/Vercel link: CTA falls back to the itch.io profile or "Presto disponibile", never an empty `href`.
+- Title with no direct itch/Vercel link: CTA falls back to the itch.io profile or "Coming soon", never an empty `href`.
 - Unknown or missing `?`/slug on a title page: shows a "title not found" state with a link home, not a blank page.
 - Touch device with no hover and no gyroscope (and iOS requiring permission): tilt/parallax degrade to static, scrolling and swiping still work.
 - Reduced-motion and JS-disabled visitors: all content, links and CTAs remain reachable.
@@ -62,7 +64,7 @@
 
 - [ ] **Step 1: Write `tools/check-site.mjs`.** For every `Title`: each referenced local image exists on disk; `primary.url` is non-empty and `https://`; `<slug>.html` exists; every local `href`/`src` in every top-level `.html` resolves. Prints one line per failure, exits non-zero on any.
 - [ ] **Step 2: Run `node tools/check-site.mjs`.** Expected: FAIL (no `titles.js` yet).
-- [ ] **Step 3: Fill `titles.js` with the 7 titles from the spec's table** using existing images (`SP icon.webp`, `SP Screenshot1-4.webp`, `MW-cover/icon/screenshot1-4.webp`, `NVFC-cover/icon/screenshot1-4.webp`, `SRR-icon.webp`, `B21 Screenshot1.webp`, `B21 Scrennshot1-3.webp`). Sync or Sink/Wordfall: `icon: null`, `cover: null`, `primary` = `https://laternightlab.itch.io/` labelled "Vedi su itch.io". Ballers21 `primary` = `https://baller21.vercel.app/` labelled "Gioca ora"; Master Work `secondary` includes the two GitHub Release downloads.
+- [ ] **Step 3: Fill `titles.js` with the 7 titles from the spec's table** using existing images (`SP icon.webp`, `SP Screenshot1-4.webp`, `MW-cover/icon/screenshot1-4.webp`, `NVFC-cover/icon/screenshot1-4.webp`, `SRR-icon.webp`, `B21 Screenshot1.webp`, `B21 Scrennshot1-3.webp`). Sync or Sink/Wordfall: `icon: null`, `cover: null`, `primary` = `https://laternightlab.itch.io/` labelled "View on itch.io". Ballers21 `primary` = `https://baller21.vercel.app/` labelled "Play now"; Master Work `secondary` includes the two GitHub Release downloads.
 - [ ] **Step 4: Implement `site.css`** (tokens, night background with star layers, glass nav, buttons, tile base, reduced-motion media query that zeroes animations) **and `site.js`** (`getTitle`, `onReducedMotion`, `enableTilt` via Pointer Events setting `--rx/--ry` custom properties, no-op under reduced motion or on `hover: none` without gyro).
 - [ ] **Step 5: Run `node tools/check-site.mjs`.** Expected: PASS for data/images; page-file checks still pass for the existing pages.
 - [ ] **Step 6: Commit.**
@@ -75,7 +77,7 @@
 
 **Interfaces:**
 - Consumes: `LNL.onReducedMotion()`, logo layer ids from Task 1, motion values from `docs/motion-notes.md`.
-- Produces: `#hero` section with inline-embedded `logo-full.svg` (inline so groups are animatable); `hero.js` exports nothing global, sets `--px/--py` (−1..1) on `#hero` from pointer, touch drag and `deviceorientation`; `iOS` permission requested only from an explicit tap on a small "Attiva movimento" button.
+- Produces: `#hero` section with inline-embedded `logo-full.svg` (inline so groups are animatable); `hero.js` exports nothing global, sets `--px/--py` (−1..1) on `#hero` from pointer, touch drag and `deviceorientation`; `iOS` permission requested only from an explicit tap on a small "Enable motion" button.
 
 - [ ] **Step 1: Build the hero markup and `home.css`:** full-height section, claim line verbatim, scroll cue. Planets orbit via CSS `offset-path` or rotating wrapper; moon pulse and spark drift via keyframes with the timings from the notes; layers shift by `calc(var(--px) * depth)`.
 - [ ] **Step 2: Implement `hero.js`** (pointer, touch, gyro with permission button, rAF-throttled, paused when the hero is off screen via IntersectionObserver).
@@ -90,7 +92,7 @@
 
 **Interfaces:**
 - Consumes: `window.LNL_TITLES`, `LNL.enableTilt`.
-- Produces: `renderFeatured(titles: Title[]): void` (auto-advancing carousel, swipe/drag, pauses on hover/touch and when hidden, dots, keyboard arrows) and `renderRows(titles: Title[]): void` creating rows "Gioca nel browser" (`row==='browser'`), "Scarica" (`row==='download'`), "App" (`row==='app'`) with `scroll-snap-x` tiles; a tile = icon/cover (or accent placeholder with initial), name, platform badge; each tile links to `<slug>.html`.
+- Produces: `renderFeatured(titles: Title[]): void` (auto-advancing carousel, swipe/drag, pauses on hover/touch and when hidden, dots, keyboard arrows) and `renderRows(titles: Title[]): void` creating rows "Play in browser" (`row==='browser'`), "Download" (`row==='download'`), "App" (`row==='app'`) with `scroll-snap-x` tiles; a tile = icon/cover (or accent placeholder with initial), name, platform badge; each tile links to `<slug>.html`.
 
 - [ ] **Step 1: Implement `renderFeatured`** using `cover` when present, else the first shot, else an accent gradient; accent colour drives the glow; CTA button uses `primary`.
 - [ ] **Step 2: Implement `renderRows`** skipping rows with no titles; placeholder tile when `icon`/`cover` is null; tilt on pointer/touch.
@@ -120,7 +122,7 @@
 
 **Interfaces:**
 - Consumes: `LNL.getTitle`, `LNL_TITLES`, `LNL.enableTilt`.
-- Produces: `renderTitle(slug: string): void` in `title.js`: hero with device frame (phone for apps/mobile titles, desktop for PC/browser titles) cycling the title's `shots` with a slide/parallax animation; primary CTA, secondary CTAs; swipeable gallery; info block; "Altri titoli" row (all titles except the current). Missing slug or unknown title renders a "Titolo non trovato" state with a link to `index.html`.
+- Produces: `renderTitle(slug: string): void` in `title.js`: hero with device frame (phone for apps/mobile titles, desktop for PC/browser titles) cycling the title's `shots` with a slide/parallax animation; primary CTA, secondary CTAs; swipeable gallery; info block; "More titles" row (all titles except the current). Missing slug or unknown title renders a "Title not found" state with a link to `index.html`.
 
 - [ ] **Step 1: Draft the two mockups in FigCraft** (`figcraft-cli run` with a command script) for the home and the title page; export device frames as SVG into `assets/svg/`; `figcraft-cli render` PNG for a visual check.
 - [ ] **Step 2: Implement `title.js` and `title.css`** with the per-title `--accent`; each title's `<title>`/meta stays in its static HTML. Titles with no `shots` show the accent placeholder inside the frame.

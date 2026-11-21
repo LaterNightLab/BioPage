@@ -54,13 +54,13 @@ Le pagine esistenti mantengono gli stessi nomi file, così i link già pubblicat
 ### Home
 1. Nav fissa in vetro con logo SVG.
 2. Hero a tutto schermo: logo animato (pianeti in orbita, luna che pulsa) che reagisce a puntatore/touch/giroscopio; claim "Creating in the late night hours what the day hasn't seen... not yet!".
-3. Carosello "In evidenza" tipo store: copertina grande, titolo, badge piattaforma, bottone Play/Open.
-4. Righe orizzontali con scroll-snap e tilt al tocco: "Gioca nel browser", "Scarica", "App". Le card sono tessere store (cover, icona, badge).
+3. Carousel "Featured" tipo store: copertina grande, titolo, badge piattaforma, bottone Play/Open.
+4. Righe orizzontali con scroll-snap e tilt al tocco: "Play in browser", "Download", "App". Le card sono tessere store (cover, icona, badge).
 5. Narrativa a scorrimento (3–4 capitoli: la notte come fucina, giochi nati da storie, app per problemi ignorati, ovunque: PC/mobile/browser) con orbita che cambia mentre si scorre.
 6. Footer: itch.io, Discord, privacy.
 
 ### Pagina titolo
-Hero col mockup animato (dispositivo coerente col gioco, screenshot che scorrono), colore d'accento, CTA primaria (Vercel o itch.io) e secondarie, galleria con swipe, info/piattaforme, riga "Altri titoli". Tutte dallo stesso template.
+Hero col mockup animato (dispositivo coerente col gioco, screenshot che scorrono), colore d'accento, CTA primaria (Vercel o itch.io) e secondarie, galleria con swipe, info/piattaforme, riga "More titles". Tutte dallo stesso template.
 
 ## Titoli e link (stato attuale)
 | Titolo | Pagina | CTA primaria | Note |
@@ -80,4 +80,7 @@ GitHub Pages, nessun build, HTML/CSS/JS statico; immagini `.webp`; `prefers-redu
 Font display esatto, valori di timing/easing (derivati dallo studio in AniCraft), uso o no di GSAP, struttura dei mockup, ordine delle righe nello store, resa del giroscopio su iOS.
 
 ## Aperto (risponde Stefano, può restare placeholder)
-Link diretti itch.io/Vercel e icone per Sync or Sink, Wordfall: Veyra e Santa Rooftop Rush. Finché mancano: bottone "Presto disponibile" o link al profilo itch.io, e icona generata dai colori del titolo.
+Link diretti itch.io/Vercel e icone per Sync or Sink, Wordfall: Veyra e Santa Rooftop Rush. Finché mancano: bottone "Coming soon" o link al profilo itch.io, e icona generata dai colori del titolo.
+
+## Lingua (decisione di Stefano, 2026-11-21)
+Il sito è **solo in inglese**: ogni testo visibile, etichetta, bottone, attributo `alt`/`aria-label`, stato vuoto e messaggio d'errore. Nessuna stringa italiana nel codice, nei dati o nei mockup.

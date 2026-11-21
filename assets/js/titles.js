@@ -57,7 +57,7 @@ window.LNL_TITLES = [
     cover: null,
     shots: ['B21 Scrennshot1.webp', 'B21 Scrennshot2.webp', 'B21 Scrennshot3.webp'],
     row: 'app',
-    primary: { label: 'Gioca ora', url: 'https://baller21.vercel.app/' },
+    primary: { label: 'Play now', url: 'https://baller21.vercel.app/' },
     secondary: []
   },
   {
@@ -83,7 +83,7 @@ window.LNL_TITLES = [
     cover: null,
     shots: [],
     row: 'download',
-    primary: { label: 'Vedi su itch.io', url: 'https://laternightlab.itch.io/' },
+    primary: { label: 'View on itch.io', url: 'https://laternightlab.itch.io/' },
     secondary: []
   },
   {
@@ -96,7 +96,7 @@ window.LNL_TITLES = [
     cover: null,
     shots: [],
     row: 'download',
-    primary: { label: 'Vedi su itch.io', url: 'https://laternightlab.itch.io/' },
+    primary: { label: 'View on itch.io', url: 'https://laternightlab.itch.io/' },
     secondary: []
   }
 ];
