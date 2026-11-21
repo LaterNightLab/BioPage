@@ -34,8 +34,11 @@
 /* Mobile: orbit pinned under the nav as a compact banner, chapters scroll beneath */
 @media (max-width: 820px) {
   .story-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .story-stage { top: var(--nav-h); height: 30vh; z-index: 2; margin: 0 -1rem; padding: .5rem 1rem; background: linear-gradient(var(--night) 70%, transparent); }
-  .story-chapters { padding: 2vh 0 8vh; }
-  .chapter { min-height: 62vh; }
+  .story-stage { top: var(--nav-h); height: 30vh; z-index: 2; margin: 0 -1rem; padding: .5rem 1rem; background: linear-gradient(var(--night) 88%, transparent); }
+  .orbit-art { overflow: hidden; }
+  .story-chapters { padding: 1vh 0 4vh; }
+  .chapter { min-height: 0; padding: 1.4rem 0; }
+  .chapter h3 { font-size: clamp(1.9rem, 8vw, 2.4rem); }
+  .chapter-kicker { margin-bottom: .5rem; }
 }
 
