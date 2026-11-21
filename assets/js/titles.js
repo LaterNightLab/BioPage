@@ -90,14 +90,14 @@ window.LNL_TITLES = [
     icon: 'MW-icon.webp',
     cover: 'MW-cover.webp',
     shots: ['MW-screenshot1.webp', 'MW-screenshot2.webp', 'MW-screenshot3.webp', 'MW-screenshot4.webp'],
-    row: 'browser',
-    primary: { label: 'Play on itch.io', url: 'https://laternightlab.itch.io/master-work' },
+    row: 'download',
+    primary: { label: 'Get it on itch.io', url: 'https://laternightlab.itch.io/master-work' },
     secondary: [
       { label: 'Windows installer', url: 'https://github.com/LaterNightLab/BioPage/releases/download/master-work-windows/MasterWork-Setup.exe' },
       { label: 'Windows zip', url: 'https://github.com/LaterNightLab/BioPage/releases/download/master-work-windows/MasterWork-Windows.zip' }
     ],
     device: 'desktop',
-    platforms: ['Browser', 'Windows'],
+    platforms: ['Windows'],
     tags: ['3D Medieval Strategy', 'Godot 4.7 Engine', 'Low Poly Aesthetic', 'Keyboard & Touch', '6 Dynamic Rivals'],
     aboutHeading: 'The Courtyard Forge Awaits',
     about: [
@@ -117,7 +117,7 @@ window.LNL_TITLES = [
       }
     ],
     controls: {
-      intro: 'Engineered from the ground up for instantaneous responsiveness with zero network latency. Play smoothly right in your desktop browser or on mobile touchscreens.',
+      intro: 'Engineered from the ground up for instantaneous responsiveness with zero network latency.',
       rows: [
         { keys: 'WASD / ↑↓←→', title: 'Move', text: 'across the courtyard and between workbenches' },
         { keys: 'E', title: 'Action', text: 'grab basket materials, place on table, forge tile, and lay on wall' },
@@ -126,10 +126,10 @@ window.LNL_TITLES = [
         { keys: 'Touchscreen', title: 'Virtual thumbstick & round buttons', text: 'tailored for phone and tablet' }
       ]
     },
-    showcase: 'Built in Godot 4.7 using custom low-poly 3D models hand-crafted in Blender, optimized for lightweight, instant web loading.',
+    showcase: 'Built in Godot 4.7 using custom low-poly 3D models hand-crafted in Blender, optimized to stay lightweight and load fast.',
     closing: {
       heading: 'Ready to Build Your Masterpiece?',
-      text: 'Play instantly in your browser, or grab the Windows PC build and prove your craft against the guild\'s finest!'
+      text: 'Grab the Windows PC build and prove your craft against the guild\'s finest!'
     },
     notes: [
       'Windows installer: about 45 MB. Portable zip: about 61 MB.',
@@ -244,10 +244,7 @@ window.LNL_TITLES = [
     row: 'download',
     primary: {
       label: 'Get it on Microsoft Store',
-      url: 'https://apps.microsoft.com/detail/9MTFKC2QBFC2',
-      live: false,
-      soonLabel: 'Coming soon to Microsoft Store',
-      note: 'Free on Windows 10/11. The Store page opens as soon as the game is published.'
+      url: 'https://apps.microsoft.com/detail/9MTFKC2QBFC2'
     },
     secondary: [],
     device: 'desktop',
