@@ -151,8 +151,10 @@ window.LNL_TITLES = [
     cover: 'NVFC-cover.webp',
     shots: ['NVFC-screenshot1.webp', 'NVFC-screenshot2.webp', 'NVFC-screenshot3.webp', 'NVFC-screenshot4.webp'],
     row: 'browser',
-    primary: { label: 'Play on itch.io', url: 'https://laternightlab.itch.io/nonna-vs-food-crimines' },
-    secondary: [],
+    primary: { label: 'Play now', url: 'https://nonnavs-food-crimes.vercel.app/' },
+    secondary: [
+      { label: 'Play on itch.io', url: 'https://laternightlab.itch.io/nonna-vs-food-crimines' }
+    ],
     device: 'desktop',
     platforms: ['Browser', 'Mobile'],
     tags: ['Action Roguelite', 'Survivors-like', 'Godot 4 Engine', '3D-Rendered Cartoon Sprites', '5 Languages'],
@@ -235,17 +237,16 @@ window.LNL_TITLES = [
     slug: 'santa-rooftop-rush',
     name: 'Santa Rooftop Rush',
     kind: 'game',
-    tagline: 'One night. Ten chimneys. Before dawn. A free 3D lane runner for Windows PC.',
+    tagline: 'One night. Ten chimneys. Before dawn. A free 3D lane runner: play in your browser or on Windows PC.',
     accent: '#3ccf7a',
     icon: 'SRR-icon.webp',
     cover: null,
     shots: ['SRR-screenshot1.webp', 'SRR-screenshot2.webp', 'SRR-screenshot3.webp'],
     row: 'browser',
-    primary: {
-      label: 'Get it on Microsoft Store',
-      url: 'https://apps.microsoft.com/detail/9MTFKC2QBFC2'
-    },
-    secondary: [],
+    primary: { label: 'Play now', url: 'https://santa-is-running.vercel.app/' },
+    secondary: [
+      { label: 'Get it on Microsoft Store', url: 'https://apps.microsoft.com/detail/9MTFKC2QBFC2' }
+    ],
     device: 'desktop',
     platforms: ['Browser', 'Windows'],
     tags: ['3D Lane Runner', 'Godot 4.7 Engine', 'Christmas Eve', 'PEGI 3 · USK 0', 'No In-App Purchases', 'Free'],
@@ -291,11 +292,11 @@ window.LNL_TITLES = [
     showcase: 'Built in Godot 4.7 with low-poly 3D models made in Blender, under a moonlit winter sky.',
     closing: {
       heading: 'Ready for the Night Shift?',
-      text: 'Lace up Santa\'s boots and race the sunrise across the city rooftops. Free on Windows 10/11.'
+      text: 'Lace up Santa\'s boots and race the sunrise across the city rooftops. Free to play in your browser and on Windows 10/11.'
     },
     notes: [
       'Free, no in-app purchases, no personal data collected. Rated PEGI 3 / USK 0.',
-      'Published by LaterNightLab · Windows 10/11 only.'
+      'Published by LaterNightLab · Play in your browser or on Windows 10/11.'
     ]
   },
   {
