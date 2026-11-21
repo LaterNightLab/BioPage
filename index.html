@@ -10,10 +10,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
   <link rel="stylesheet" href="assets/css/home.css">
+  <link rel="stylesheet" href="assets/css/story.css">
   <script src="assets/js/site.js" defer></script>
   <script src="assets/js/titles.js" defer></script>
   <script src="assets/js/hero.js" defer></script>
   <script src="assets/js/store.js" defer></script>
+  <script src="assets/js/story.js" defer></script>
 </head>
 <body>
   <div class="sky" aria-hidden="true"><div class="stars stars-1"></div><div class="stars stars-2"></div><div class="stars stars-3"></div></div>
@@ -44,9 +46,77 @@
     <section id="featured" class="section store-section"></section>
     <section id="rows" class="section store-section"></section>
 
-    <!-- Task 5: insert #story section here -->
+    <section id="story" class="story" data-chapter="0" aria-labelledby="story-heading">
+      <h2 id="story-heading" class="sr-only">Our story</h2>
+      <div class="story-grid">
+        <div class="story-stage" aria-hidden="true">
+          <svg class="orbit-art" viewBox="30 80 710 440" xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <defs>
+              <filter id="so-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+              <radialGradient id="so-moon" cx="345" cy="350" r="120" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff0a8"/><stop offset=".45" stop-color="#ffc93c"/><stop offset=".8" stop-color="#ffb629"/><stop offset="1" stop-color="#ff8a1f"/></radialGradient>
+              <radialGradient id="so-violet-fill" cx="138" cy="275" r="52" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8f86ff"/><stop offset=".55" stop-color="#5a2fe0"/><stop offset="1" stop-color="#2a138f"/></radialGradient>
+              <radialGradient id="so-green-fill" cx="170" cy="410" r="95" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9bd443"/><stop offset=".55" stop-color="#3e9a2b"/><stop offset="1" stop-color="#0f4a1a"/></radialGradient>
+              <radialGradient id="so-sun-fill" cx="566" cy="164" r="62" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb15a"/><stop offset=".5" stop-color="#ff5a1f"/><stop offset="1" stop-color="#c81e0e"/></radialGradient>
+              <radialGradient id="so-chart-fill" cx="616" cy="337" r="62" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#14204a"/><stop offset="1" stop-color="#070b22"/></radialGradient>
+              <linearGradient id="so-orbit-stroke" x1="63" x2="683" y1="420" y2="210" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff7a2f" stop-opacity=".9"/><stop offset=".5" stop-color="#ff5a1f" stop-opacity=".55"/><stop offset="1" stop-color="#ff8a3d" stop-opacity=".9"/></linearGradient>
+            </defs>
+            <g class="so-orbit"><path fill="none" stroke="url(#so-orbit-stroke)" stroke-width="2" d="M667.83 219.2A310 112-18 1 1 78.17 410.8a310 112-18 1 1 589.66-191.6Z"/></g>
+            <g class="so-moon"><circle cx="400" cy="340" r="95" fill="#ff9a1f" opacity=".5" filter="url(#so-soft)"/><path fill="url(#so-moon)" stroke="#ffe48a" stroke-width="2" d="M344.19 228.03a98 98 0 1 0 120 127.2 92 92 0 0 1-120-127.2Z"/></g>
+            <g class="so-planet so-violet"><circle cx="152" cy="292" r="40" fill="#6a3cff" opacity=".6" filter="url(#so-soft)"/><path fill="none" stroke="#9a5bff" stroke-linecap="round" stroke-width="3.5" d="M85.49 310.14a68 15-12 0 1 133.02-28.28"/><circle cx="152" cy="292" r="40" fill="url(#so-violet-fill)"/><path fill="none" stroke="#b76cff" stroke-linecap="round" stroke-width="4" d="M218.51 281.86a68 15-12 0 1-133.02 28.28"/></g>
+            <g class="so-planet so-green"><circle cx="190" cy="437" r="70" fill="#3e9a2b" opacity=".45" filter="url(#so-soft)"/><circle cx="190" cy="437" r="70" fill="url(#so-green-fill)"/><path fill="#ffb629" d="M139 394c-3.3-20 5.5-36 11-40 5.5 4 14.3 20 11 40Zm20-8c-3.6-24 6-43.2 12-48 6 4.8 15.6 24 12 48Zm22-3c-3.9-27.5 6.5-49.5 13-55 6.5 5.5 16.9 27.5 13 55Zm24 6c-3.6-23 6-41.4 12-46 6 4.6 15.6 23 12 46Z"/></g>
+            <g class="so-planet so-sun"><circle cx="578" cy="178" r="52" fill="#ff4a1a" opacity=".8" filter="url(#so-soft)"/><circle cx="578" cy="178" r="48" fill="url(#so-sun-fill)"/></g>
+            <g class="so-planet so-chart"><circle cx="616" cy="337" r="62" fill="none" stroke="#22d3ee" stroke-width="6" opacity=".7" filter="url(#so-soft)"/><circle cx="616" cy="337" r="62" fill="url(#so-chart-fill)"/><path fill="#c23bd4" d="M581 308h7v64h-7zM599.6 294h7v78h-7zM618 312h7v60h-7zM636.4 332h7v40h-7z"/><path fill="#3a6bff" d="M590.4 320h7v52h-7zM608.8 302h7v70h-7zM645.6 342h7v30h-7z"/><path fill="#2e5bff" d="M566 372h100v6H566z"/><circle cx="616" cy="337" r="62" fill="none" stroke="#22d3ee" stroke-width="3"/></g>
+          </svg>
+        </div>
+        <div class="story-chapters">
+          <article class="chapter" data-index="0" aria-labelledby="ch0">
+            <p class="chapter-kicker">Chapter 01</p>
+            <h3 id="ch0">The night is our forge.</h3>
+            <p>We are an independent creative development lab. When the day goes quiet, the real work begins: the space where ideas are shaped, tested and set on fire.</p>
+          </article>
+          <article class="chapter" data-index="1" aria-labelledby="ch1">
+            <p class="chapter-kicker">Chapter 02</p>
+            <h3 id="ch1">Games born from stories.</h3>
+            <p>Every project is a unique world: games born from stories that begged to be played. We follow each one until it has a place to live, a rule to break and a player to find it.</p>
+          </article>
+          <article class="chapter" data-index="2" aria-labelledby="ch2">
+            <p class="chapter-kicker">Chapter 03</p>
+            <h3 id="ch2">Apps for the challenges we ignored.</h3>
+            <p>And apps crafted to solve the challenges we were tired of ignoring. Small tools, built with the same care as the games, to make everyday friction disappear.</p>
+          </article>
+          <article class="chapter" data-index="3" aria-labelledby="ch3">
+            <p class="chapter-kicker">Chapter 04</p>
+            <h3 id="ch3">Wherever you are.</h3>
+            <p>Whether on PC, mobile or browser, our creations await you. The whole orbit is lit: pick a world and step in.</p>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Task 5: insert footer here -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/svg/logo-mark.svg" alt="" width="56" height="56">
+        <p class="footer-name">Later Night Lab</p>
+        <p class="footer-tag">Creating in the late night hours what the day hasn't seen.</p>
+      </div>
+      <nav class="footer-group" aria-label="Find us">
+        <h2>Find us</h2>
+        <ul>
+          <li><a href="https://laternightlab.itch.io/" target="_blank" rel="noopener">itch.io</a></li>
+          <li><a href="https://discord.gg/g4S7uSXyVY" target="_blank" rel="noopener">Discord</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-group" aria-label="Legal">
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="privacy.html">Privacy &ndash; Solitaire Pulse</a></li>
+          <li><a href="privacy-nonna-vs-food-crimes.html">Privacy &ndash; Nonna vs Food Crimes</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="footer-copy">&copy; 2026 LATERNIGHTLAB &mdash; A project by MrGamer92</p>
+  </footer>
 </body>
 </html>
