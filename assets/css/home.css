@@ -3,7 +3,7 @@
 .hero {
   --px: 0; --py: 0;
   position: relative;
-  min-height: calc(100svh - 58px);
+  min-height: calc(100svh - var(--nav-h));
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: clamp(.5rem, 2vh, 1.5rem);
   padding: 1rem clamp(1rem, 4vw, 2rem) 4.5rem;
@@ -114,7 +114,7 @@
 }
 
 /* ===== Store: featured carousel + rows ===== */
-.store-section { padding-block: clamp(1.5rem, 4vw, 3rem); scroll-margin-top: 58px; }
+.store-section { padding-block: clamp(1.5rem, 4vw, 3rem); scroll-margin-top: var(--nav-h); }
 
 /* Carousel */
 .fc { position: relative; --accent: var(--amber); border-radius: calc(var(--radius) + 6px); outline-offset: 4px; }

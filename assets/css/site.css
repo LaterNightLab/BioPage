@@ -12,6 +12,7 @@
   --glass: rgba(14, 16, 34, .62);
   --line: rgba(255, 255, 255, .1);
   --radius: 18px;
+  --nav-h: 58px;
   --font-display: 'Space Grotesk', 'Outfit', system-ui, sans-serif;
   --font-body: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
@@ -62,6 +63,7 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; margin: 0 0 .5e
 .nav {
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  min-height: var(--nav-h);
   padding: .7rem clamp(1rem, 4vw, 2.5rem);
   background: var(--glass);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
@@ -200,3 +202,4 @@ html, body { overflow-x: clip; }
 .footer-group a:hover, .footer-group a:focus-visible { color: var(--text); }
 .footer-copy { max-width: 1180px; margin: 2rem auto 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
 @media (max-width: 640px) { .footer-inner { grid-template-columns: minmax(0, 1fr); } }
+.badges:empty { display: none; }

@@ -13,6 +13,12 @@
     return !!(window.LNL && window.LNL.onReducedMotion && window.LNL.onReducedMotion());
   }
 
+  // True when focus came from the keyboard (not a pointer click).
+  function kbFocus(e) {
+    var t = e.target;
+    try { return !(t && t.matches) || t.matches(':focus-visible'); } catch (err) { return true; }
+  }
+
   function el(tag, cls, attrs) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -47,7 +53,7 @@
   }
 
   function badges(t) {
-    if (Array.isArray(t.platforms) && t.platforms.length) return t.platforms.slice();
+    if (Array.isArray(t.platforms)) return t.platforms.slice(); // explicit [] = no badges
     // Fallback heuristic for titles without explicit platforms.
     var list = [];
     if (t.row === 'browser') list.push('Browser');
@@ -199,7 +205,7 @@
 
     fc.addEventListener('mouseenter', function () { setPause('hover', true); });
     fc.addEventListener('mouseleave', function () { setPause('hover', false); });
-    fc.addEventListener('focusin', function () { setPause('focus', true); });
+    fc.addEventListener('focusin', function (e) { if (kbFocus(e)) setPause('focus', true); });
     fc.addEventListener('focusout', function () { setPause('focus', false); });
     document.addEventListener('visibilitychange', function () { setPause('hidden', document.hidden); });
     if ('IntersectionObserver' in window) {
@@ -244,6 +250,8 @@
       dragX = 0;
       if (moved && Math.abs(dx) > DRAG_THRESHOLD) go(index + (dx < 0 ? 1 : -1));
       else { paint(); schedule(); }
+      // The click (if any) fires right after pointerup; reset the flag afterwards either way.
+      setTimeout(function () { moved = false; }, 0);
     }
     viewport.addEventListener('pointerup', end);
     viewport.addEventListener('pointercancel', end);

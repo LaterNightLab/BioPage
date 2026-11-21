@@ -113,7 +113,7 @@
 }
 
 @media (min-width: 900px) {
-  .t-hero { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); min-height: min(calc(100svh - 58px), 760px); }
+  .t-hero { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); min-height: min(calc(100svh - var(--nav-h)), 760px); }
   .t-hero:has(.t-stage--phone) { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
 }
 

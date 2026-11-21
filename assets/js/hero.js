@@ -42,6 +42,10 @@
   }
   hero.addEventListener('touchstart', touchPos, { passive: true });
   hero.addEventListener('touchmove', touchPos, { passive: true });
+  function easeHome() { setTarget(0, 0); }
+  hero.addEventListener('touchend', easeHome, { passive: true });
+  hero.addEventListener('touchcancel', easeHome, { passive: true });
+  hero.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') easeHome(); }, { passive: true });
 
   // Device orientation
   var orientationOn = false;

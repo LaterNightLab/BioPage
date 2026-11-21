@@ -4,7 +4,7 @@
    Required: slug, name, kind, tagline, accent, icon, cover, shots, row, primary, secondary.
    Optional page content (rendered by assets/js/title.js, all English):
      device      'phone' | 'desktop' (default: phone for kind 'app', desktop otherwise)
-     platforms   string[]  platform badges (also used by the home store badges)
+     platforms   string[]  platform badges (also used by the home store badges); [] = no badge, absent = heuristic
      tags        string[]  genre / tech chips
      stats       [{ value, label }]
      aboutHeading, about (string[] paragraphs)
@@ -311,6 +311,7 @@ window.LNL_TITLES = [
     icon: null,
     cover: null,
     shots: [],
+    platforms: [],
     row: 'download',
     primary: { label: 'View on itch.io', url: 'https://laternightlab.itch.io/' },
     secondary: [],
@@ -327,6 +328,7 @@ window.LNL_TITLES = [
     icon: null,
     cover: null,
     shots: [],
+    platforms: [],
     row: 'download',
     primary: { label: 'View on itch.io', url: 'https://laternightlab.itch.io/' },
     secondary: [],

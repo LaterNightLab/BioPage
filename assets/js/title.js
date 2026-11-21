@@ -65,8 +65,18 @@
     return wrap;
   }
 
+  var cleanups = [];
+  var lightboxEl = null;
+  function runCleanups() {
+    cleanups.forEach(function (fn) { try { fn(); } catch (err) { /* ignore */ } });
+    cleanups = [];
+    if (lightboxEl && lightboxEl.parentNode) lightboxEl.parentNode.removeChild(lightboxEl);
+    lightboxEl = null;
+  }
+
   function platformBadges(t) {
     var names = (window.LNL_STORE && window.LNL_STORE.badges) ? window.LNL_STORE.badges(t) : list(t.platforms);
+    if (!names.length) return null;
     var wrap = el('div', 'badges', { 'aria-label': 'Platforms' });
     names.forEach(function (b) { wrap.appendChild(el('span', 'badge', null, b)); });
     return wrap;
@@ -146,13 +156,21 @@
 
     stage.addEventListener('mouseenter', function () { setPause('hover', true); });
     stage.addEventListener('mouseleave', function () { setPause('hover', false); });
-    dots.addEventListener('focusin', function () { setPause('focus', true); });
+    dots.addEventListener('focusin', function (e) {
+      var f = true;
+      try { f = !e.target.matches || e.target.matches(':focus-visible'); } catch (err) { /* keep true */ }
+      if (f) setPause('focus', true);
+    });
     dots.addEventListener('focusout', function () { setPause('focus', false); });
-    document.addEventListener('visibilitychange', function () { setPause('hidden', document.hidden); });
+    function onVis() { setPause('hidden', document.hidden); }
+    document.addEventListener('visibilitychange', onVis);
+    cleanups.push(function () { document.removeEventListener('visibilitychange', onVis); clearTimeout(timer); timer = null; pause.hidden = true; });
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
+      var io = new IntersectionObserver(function (es) {
         setPause('offscreen', !es[es.length - 1].isIntersecting);
-      }, { threshold: 0.2 }).observe(stage);
+      }, { threshold: 0.2 });
+      io.observe(stage);
+      cleanups.push(function () { io.disconnect(); });
     }
     if (slides.length > 1) stage.appendChild(dots);
     if (window.LNL && window.LNL.enableTilt) window.LNL.enableTilt(stage);
@@ -168,7 +186,8 @@
     if (t.icon) icon.appendChild(img(t, t.icon, '', 72, 72, 't-icon-img', true));
     else icon.appendChild(fallbackArt(t, 't-icon-img'));
     id.appendChild(icon);
-    id.appendChild(platformBadges(t));
+    var pb = platformBadges(t);
+    if (pb) id.appendChild(pb);
     copy.appendChild(id);
     copy.appendChild(el('h1', 't-name', { id: 't-name' }, t.name));
     copy.appendChild(el('p', 't-tagline', null, t.tagline));
@@ -287,6 +306,7 @@
       else if (e.key === 'ArrowRight') show(cur + 1);
     });
     document.body.appendChild(dlg);
+    lightboxEl = dlg;
     return { open: function (i) { show(i); dlg.showModal(); close.focus(); } };
   }
 
@@ -340,27 +360,14 @@
   }
 
   /* ---------- More titles ---------- */
-  function simpleTile(t) {
-    var a = el('a', 'tile store-tile', { href: t.slug + '.html', 'aria-label': t.name });
-    a.style.setProperty('--accent', t.accent);
-    var art = el('div', 'tile-art');
-    art.appendChild(t.cover || t.icon ? img(t, t.cover || t.icon, t.name, 560, 420, 'tile-img') : fallbackArt(t, 'tile-img'));
-    var media = el('div', 'tile-media');
-    media.appendChild(art);
-    a.appendChild(media);
-    var body = el('div', 'tile-body');
-    body.appendChild(el('h3', null, null, t.name));
-    a.appendChild(body);
-    return a;
-  }
-
   function buildMore(exceptSlug) {
     var others = list(window.LNL_TITLES).filter(function (t) { return t.slug !== exceptSlug; });
     if (!others.length) return null;
     var s = el('section', 'section t-more store-row', { 'aria-labelledby': 't-more-heading' });
     s.appendChild(el('h2', 'store-heading', { id: 't-more-heading' }, 'More titles'));
     var row = el('div', 'row', { role: 'group', 'aria-labelledby': 't-more-heading' });
-    var make = (window.LNL_STORE && window.LNL_STORE.tile) || simpleTile;
+    var make = window.LNL_STORE && window.LNL_STORE.tile;
+    if (!make) return null;
     others.forEach(function (t) { row.appendChild(make(t)); });
     s.appendChild(row);
     return s;
@@ -389,6 +396,7 @@
       root = el('main', null, { id: 'title-root' });
       document.body.appendChild(root);
     }
+    runCleanups();
     root.textContent = '';
     var t = slug ? findTitle(slug) : undefined;
     if (!t) { notFound(root, slug); return; }
