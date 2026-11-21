@@ -59,22 +59,10 @@
     window.addEventListener('deviceorientation', onOrient, { passive: true });
   }
 
-  var btn = document.getElementById('motion-btn');
-  if (typeof window.DeviceOrientationEvent !== 'undefined') {
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS: permission only from an explicit tap, and only on touch devices
-      if (btn && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-        btn.hidden = false;
-        btn.addEventListener('click', function () {
-          DeviceOrientationEvent.requestPermission().then(function (res) {
-            if (res === 'granted') listenOrientation();
-            btn.hidden = true;
-          }, function () { btn.hidden = true; });
-        });
-      }
-    } else {
-      listenOrientation();
-    }
+  // Device orientation parallax where it needs no permission prompt (no button: motion is always on).
+  if (typeof window.DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission !== 'function') {
+    listenOrientation();
   }
 
   // Pause when hero is off screen
