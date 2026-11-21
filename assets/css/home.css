@@ -1,0 +1,116 @@
+/* Home hero. Only transform/opacity animate (plus the one-shot orbit draw-in). */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+html, body { overflow-x: clip; }
+
+.hero {
+  --px: 0; --py: 0;
+  position: relative;
+  min-height: calc(100svh - 58px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(.5rem, 2vh, 1.5rem);
+  padding: 1rem clamp(1rem, 4vw, 2rem) 4.5rem;
+  text-align: center;
+}
+.hero-logo { width: min(92vw, 68vh, 640px); aspect-ratio: 1; }
+.logo { display: block; width: 100%; height: 100%; overflow: visible; }
+.claim {
+  margin: 0; max-width: 34ch;
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(1.05rem, 2.6vw, 1.45rem); color: var(--text);
+  text-wrap: balance;
+}
+.motion-btn {
+  font: 500 .8rem var(--font-body); color: var(--muted);
+  background: transparent; border: 1px solid var(--line); border-radius: 999px;
+  padding: .3rem .8rem; min-height: 32px; cursor: pointer; opacity: .8;
+}
+.motion-btn[hidden] { display: none; }
+.motion-btn:hover { color: var(--text); opacity: 1; }
+.motion-btn:focus-visible, .cue:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.cue {
+  position: absolute; left: 50%; bottom: 1rem; width: 44px; height: 44px; margin-left: -22px;
+  display: flex; align-items: center; justify-content: center; text-decoration: none;
+}
+.cue-arrow {
+  width: 14px; height: 14px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+}
+
+/* Parallax layers: translate only, driven by hero.js via --px/--py */
+.lyr {
+  translate: calc(var(--px, 0) * var(--d) * 1px) calc(var(--py, 0) * var(--d) * 1px);
+}
+
+/* Static composition: orbiters sit at their drawn position (translate undoes the inner centering) */
+.orbiter { translate: var(--cx) var(--cy); }
+
+@media (max-width: 520px) {
+  .nav-brand span { display: none; }
+  .nav-links { gap: .8rem; font-size: .92rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Orbit draw-in + glow breathing */
+  #orbit-path { stroke-dasharray: 1; animation: orbit-draw 1.6s cubic-bezier(.65, 0, .35, 1) both; }
+  @keyframes orbit-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  #orbit-glow { animation: orbit-glow 6s cubic-bezier(.45, 0, .55, 1) infinite alternate; }
+  @keyframes orbit-glow { from { opacity: .45; } to { opacity: .7; } }
+
+  /* Moon pulse */
+  #moon-body, #moon-glow { transform-origin: 372px 322px; }
+  #moon-body { animation: moon-pulse 2s cubic-bezier(.25, .1, .25, 1) infinite alternate; }
+  @keyframes moon-pulse { from { transform: scale(1); } to { transform: scale(1.04); } }
+  #moon-glow { animation: moon-glow 2s cubic-bezier(.25, .1, .25, 1) infinite alternate; }
+  @keyframes moon-glow { from { opacity: .7; } to { opacity: 1; } }
+  #spark-core { animation: core-pulse 2s cubic-bezier(.25, .1, .25, 1) infinite alternate; }
+  @keyframes core-pulse { from { opacity: .8; } to { opacity: 1; } }
+
+  /* Sparks drift up-right, then hard reset */
+  .sp, .sp-all { animation: spark 2.8s cubic-bezier(.22, 1, .36, 1) infinite; }
+  .sp { animation-delay: calc(var(--i) * .18s); }
+  @keyframes spark {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(10px, -10px); opacity: .3; }
+  }
+
+  /* Chart bars grow in */
+  .bar { transform-box: fill-box; transform-origin: bottom; animation: bar-in .9s cubic-bezier(.34, 1.56, .64, 1) calc(var(--n) * .06s) backwards; }
+  @keyframes bar-in { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+  /* Wordmark sweep: each letter's glow brightens for 0.6 s of a 6 s cycle */
+  .letter .glow { animation: letter-glow 6s cubic-bezier(.5, 1, .89, 1) infinite; animation-delay: calc(var(--i) * .12s); opacity: .55; }
+  @keyframes letter-glow { 0% { opacity: .55; } 5% { opacity: 1; } 10%, 100% { opacity: .55; } }
+
+  /* Scroll cue bob */
+  .cue-arrow { animation: cue 2.4s ease-in-out infinite; }
+  @keyframes cue { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: .5; } 50% { transform: translateY(6px) rotate(45deg); opacity: 1; } }
+}
+
+/* Planets ride the orbit ellipse (offset-path = #orbit-path d). Without support or with reduced motion: static composition. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (offset-path: path('M0 0')) {
+    .orbiter {
+      translate: none;
+      transform-origin: 0 0;
+      offset-path: path('M667.83 219.2A310 112-18 1 1 78.17 410.8a310 112-18 1 1 589.66-191.6Z');
+      offset-rotate: 0deg;
+      offset-anchor: 0 0;
+      animation: orbit-run 32s linear var(--dl) infinite, orbit-depth 32s linear var(--dl) infinite;
+    }
+    #planet-violet { --dl: -20.4s; }
+    #planet-green { --dl: -12s; }
+    #sun { --dl: -28.5s; }
+    #chart { --dl: -4s; }
+    #planet-green > .oi { animation: fade-in 1.2s ease-out 1.6s backwards; }
+    @keyframes orbit-run { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+    /* Path starts at the right end and runs clockwise: front (lower) apex ~25 %, back (upper) apex ~75 % */
+    @keyframes orbit-depth {
+      0%   { transform: scale(.975); opacity: .88; }
+      25%  { transform: scale(1.1); opacity: 1; }
+      50%  { transform: scale(.975); opacity: .88; }
+      75%  { transform: scale(.85); opacity: .75; }
+      100% { transform: scale(.975); opacity: .88; }
+    }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  }
+}

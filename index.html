@@ -1,424 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Later Night Lab - Official Portal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0A0E1A;
-            --card-bg: rgba(20, 25, 45, 0.7);
-            --accent-cyan: #00E5FF;
-            --accent-purple: #BB86FC;
-            --accent-yellow: #FFD600;
-            --text-white: #FFFFFF;
-            --glass-border: rgba(255, 255, 255, 0.08);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(187, 134, 252, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(20, 25, 45, 1) 0%, var(--bg-color) 100%);
-            min-height: 100vh;
-            color: var(--text-white);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-            overflow-x: hidden;
-        }
-
-        /* Ambient stars effect */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(white 1px, transparent 1px),
-                radial-gradient(white 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: 0 0, 25px 25px;
-            opacity: 0.05;
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Hero Section */
-        header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .lab-logo {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
-            transition: transform 0.5s ease;
-        }
-
-        .lab-logo:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.6;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        /* Portal Grid */
-        .portal-grid {
-            display: grid;
-            grid-template-columns: 280px 1fr 280px;
-            gap: 2.5rem;
-            width: 100%;
-            margin-top: 1rem;
-        }
-
-        .side-col {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .center-col {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        /* Cards */
-        .section-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .section-card:hover {
-            border-color: rgba(0, 229, 255, 0.3);
-            box-shadow: 0 20px 45px rgba(0, 229, 255, 0.1);
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        h2::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            background: var(--accent-purple);
-            border-radius: 2px;
-            box-shadow: 0 0 10px var(--accent-purple);
-        }
-
-        /* Item Buttons */
-        .item-link {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1rem;
-            text-decoration: none;
-            color: var(--text-white);
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .item-link img {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid var(--glass-border);
-        }
-
-        .item-icon-placeholder {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--accent-cyan);
-            flex-shrink: 0;
-        }
-
-        .item-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .item-link:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--accent-cyan);
-            transform: translateY(-3px);
-        }
-
-        .item-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 4px;
-        }
-
-        .item-status {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent-purple);
-            font-weight: 900;
-        }
-
-        .item-status.active {
-            color: var(--accent-cyan);
-        }
-
-        .mission-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            opacity: 0.8;
-            text-align: center;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: auto;
-            padding-top: 3rem;
-            text-align: center;
-            padding-bottom: 2rem;
-        }
-
-        .brand-footer {
-            font-size: 0.8rem;
-            letter-spacing: 5px;
-            opacity: 0.4;
-            text-transform: uppercase;
-        }
-
-        .footer-links {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px 20px;
-            font-size: 0.8rem;
-        }
-
-        .footer-links a {
-            color: var(--text-white);
-            opacity: 0.5;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-            color: var(--accent-cyan);
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .portal-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .side-col {
-                order: 2;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-            }
-
-            .center-col {
-                order: 1;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .side-col {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 2.2rem;
-            }
-
-            .lab-logo {
-                width: 150px;
-                height: 150px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Later Night Lab</title>
+  <meta name="description" content="Later Night Lab: indie games created in the late night hours.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/css/home.css">
+  <script src="assets/js/site.js" defer></script>
+  <script src="assets/js/titles.js" defer></script>
+  <script src="assets/js/hero.js" defer></script>
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <img src="LNL icon.webp" alt="Later Night Lab Logo" class="lab-logo">
-            <p class="subtitle">Creating in the late night hours what the day hasn't seen...not yet!</p>
-        </header>
+  <div class="sky" aria-hidden="true"><div class="stars stars-1"></div><div class="stars stars-2"></div><div class="stars stars-3"></div></div>
 
-        <main class="portal-grid">
-            <!-- Left: Games -->
-            <aside class="side-col">
-                <section class="section-card">
-                    <h2>Games</h2>
-                    <a href="solitaire-pulse.html" class="item-link">
-                        <img src="SP icon.webp" alt="Solitaire Pulse Icon">
-                        <div class="item-details">
-                            <span class="item-name">Solitaire Pulse</span>
-                            <span class="item-status active">Play Now →</span>
-                        </div>
-                    </a>
-                    <a href="master-work.html" class="item-link">
-                        <img src="MW-icon.webp" alt="Master Work Icon">
-                        <div class="item-details">
-                            <span class="item-name">Master Work</span>
-                            <span class="item-status active">Play Now →</span>
-                        </div>
-                    </a>
-                    <a href="santa-rooftop-rush.html" class="item-link">
-                        <img src="SRR-icon.webp" alt="Santa Rooftop Rush Icon">
-                        <div class="item-details">
-                            <span class="item-name">Santa Rooftop Rush</span>
-                            <span class="item-status active">View Game →</span>
-                        </div>
-                    </a>
-                    <a href="nonna-vs-food-crimes.html" class="item-link">
-                        <img src="NVFC-icon.webp" alt="Nonna vs Food Crimes Icon">
-                        <div class="item-details">
-                            <span class="item-name">Nonna vs Food Crimes</span>
-                            <span class="item-status active">Play Now →</span>
-                        </div>
-                    </a>
-                    <a href="sync-or-sink.html" class="item-link">
-                        <div class="item-icon-placeholder">S</div>
-                        <div class="item-details">
-                            <span class="item-name">Sync or Sink</span>
-                            <span class="item-status active">View Game →</span>
-                        </div>
-                    </a>
-                    <a href="wordfall-veyra.html" class="item-link">
-                        <div class="item-icon-placeholder">W</div>
-                        <div class="item-details">
-                            <span class="item-name">Wordfall: Veyra</span>
-                            <span class="item-status active">View Game →</span>
-                        </div>
-                    </a>
-                </section>
-            </aside>
+  <header class="nav">
+    <a class="nav-brand" href="index.html" aria-label="Later Night Lab"><img src="assets/svg/logo-mark.svg" alt="" width="30" height="30"><span>Later Night Lab</span></a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#rows">Giochi</a></li>
+        <li><a href="#story">Storia</a></li>
+        <li><a href="https://laternightlab.itch.io/" target="_blank" rel="noopener">itch.io</a></li>
+        <li><a href="https://discord.gg/g4S7uSXyVY" target="_blank" rel="noopener">Discord</a></li>
+      </ul>
+    </nav>
+  </header>
 
-            <!-- Center: Mission -->
-            <section class="center-col">
-                <div class="section-card">
-                    <h2>Our Mission</h2>
-                    <p class="mission-text">
-                        We are an independent creative development lab. The night is our forge, the space where ideas
-                        take shape, find their form, and evolve into reality.
-                        <br><br>
-                        Every project is a unique world: games born from stories that begged to be played, and apps
-                        crafted to solve the challenges we were tired of ignoring. Across different genres and purposes,
-                        we share a single, relentless passion: to build what hasn't been imagined yet.
-                        <br><br>
-                        Whether on PC, mobile or browser, our creations await you!
-                    </p>
-                </div>
-            </section>
+  <main>
+    <section id="hero" class="hero" aria-labelledby="hero-heading">
+      <h1 id="hero-heading" class="sr-only">Later Night Lab</h1>
+      <div class="hero-logo">
+<svg class="logo" id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768" role="img" aria-labelledby="logo-title"><title id="logo-title">LaterNightLab</title><defs><filter id="orbit-blur" width="708" height="330" x="30" y="150" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="3"/></filter><filter id="moon-blur" width="380" height="340" x="200" y="150" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="16"/></filter><filter id="sparks-blur" width="320" height="400" x="230" y="120" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="4"/></filter><filter id="pv-blur" width="190" height="150" x="60" y="220" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="8"/></filter><filter id="pg-blur" width="200" height="240" x="90" y="300" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="10"/></filter><filter id="sun-blur" width="176" height="176" x="490" y="90" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="14"/></filter><filter id="chart-blur" width="172" height="174" x="530" y="250" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="8"/></filter><filter id="wm-blur" width="708" height="140" x="30" y="520" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="6"/></filter><radialGradient id="moon-fill" cx="345" cy="350" r="120" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff0a8"/><stop offset=".45" stop-color="#ffc93c"/><stop offset=".8" stop-color="#ffb629"/><stop offset="1" stop-color="#ff8a1f"/></radialGradient><radialGradient id="spark-core" cx="372" cy="350" r="30" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fffbe0"/><stop offset=".35" stop-color="#ffd25a" stop-opacity=".9"/><stop offset="1" stop-color="#ff8a1f" stop-opacity="0"/></radialGradient><radialGradient id="pv-fill" cx="138" cy="275" r="52" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8f86ff"/><stop offset=".55" stop-color="#5a2fe0"/><stop offset="1" stop-color="#2a138f"/></radialGradient><radialGradient id="pg-fill" cx="170" cy="410" r="95" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9bd443"/><stop offset=".55" stop-color="#3e9a2b"/><stop offset="1" stop-color="#0f4a1a"/></radialGradient><radialGradient id="sun-fill" cx="566" cy="164" r="62" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb15a"/><stop offset=".5" stop-color="#ff5a1f"/><stop offset="1" stop-color="#c81e0e"/></radialGradient><radialGradient id="chart-fill" cx="616" cy="337" r="62" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#14204a"/><stop offset="1" stop-color="#070b22"/></radialGradient><linearGradient id="orbit-stroke" x1="63" x2="683" y1="420" y2="210" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff7a2f" stop-opacity=".9"/><stop offset=".5" stop-color="#ff5a1f" stop-opacity=".55"/><stop offset="1" stop-color="#ff8a3d" stop-opacity=".9"/></linearGradient><linearGradient id="moon-rim" x1="280" x2="470" y1="240" y2="420" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffe48a"/><stop offset="1" stop-color="#ff7a1f"/></linearGradient><linearGradient id="spark-streak" x1="380" x2="470" y1="340" y2="220" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff3b0"/><stop offset=".5" stop-color="#ffb629"/><stop offset="1" stop-color="#ff5a1f" stop-opacity=".7"/></linearGradient><linearGradient id="pg-tree" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#c9861a"/><stop offset=".6" stop-color="#ffb629"/><stop offset="1" stop-color="#ffe07a"/></linearGradient><linearGradient id="wm-stroke" x1="70" x2="698" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#22d3ee"/><stop offset=".36" stop-color="#3adcf2"/><stop offset=".42" stop-color="#8a7dff"/><stop offset=".5" stop-color="#b76cff"/><stop offset=".62" stop-color="#c76bff"/><stop offset=".69" stop-color="#8e7bff"/><stop offset=".75" stop-color="#2fd5f0"/><stop offset="1" stop-color="#22d3ee"/></linearGradient><clipPath id="pg-clip"><circle cx="190" cy="437" r="70"/></clipPath><clipPath id="chart-clip"><circle cx="616" cy="337" r="59"/></clipPath></defs><g class="lyr" style="--d:3"><g id="orbit"><path id="orbit-glow" fill="none" stroke="#ff5a1f" stroke-opacity=".45" stroke-width="5" d="M667.83 219.2A310 112-18 1 1 78.17 410.8a310 112-18 1 1 589.66-191.6Z" class="glow" filter="url(#orbit-blur)"/><path id="orbit-path" pathLength="1" fill="none" stroke="url(#orbit-stroke)" stroke-width="1.6" d="M667.83 219.2A310 112-18 1 1 78.17 410.8a310 112-18 1 1 589.66-191.6Z"/></g></g><g class="lyr" style="--d:8"><g id="moon"><path id="moon-glow" fill="#ff9a1f" d="M344.19 228.03a98 98 0 1 0 120 127.2 92 92 0 0 1-120-127.2" class="glow" filter="url(#moon-blur)" opacity=".85"/><path id="moon-body" fill="url(#moon-fill)" stroke="url(#moon-rim)" stroke-width="2" d="M344.19 228.03a98 98 0 1 0 120 127.2 92 92 0 0 1-120-127.2Z"/></g></g><g class="lyr" style="--d:11"><g id="sparks"><g id="sparks-glow" class="glow sp-all" filter="url(#sparks-blur)" opacity=".9"><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m402.56 335.1 63.81-31.13"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m392.49 333.99 85.89-67.1"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m392.07 327.71 80.3-89.18"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m383.98 331.55 53.38-82.19"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m385.83 318.94 39.86-89.53"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m379.25 322.95 19.67-73.41"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m470.96 285.73 33.55-21.78"/><path stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m447.24 246.45 28.21-38.84"/><circle cx="298" cy="186" r="2" fill="#ff7a2f"/><circle cx="345" cy="166" r="1.8" fill="#ffb629"/><circle cx="411" cy="147" r="2.2" fill="#ffb629"/><circle cx="455" cy="170" r="2.4" fill="#ff7a2f"/><circle cx="430" cy="196" r="1.6" fill="#ffb629"/><circle cx="262" cy="210" r="1.6" fill="#ffb629"/><circle cx="500" cy="232" r="2" fill="#ff7a2f"/><circle cx="520" cy="250" r="1.6" fill="#ffb629"/><circle cx="482" cy="292" r="2.2" fill="#ffb629"/><circle cx="455" cy="340" r="1.8" fill="#ff7a2f"/><circle cx="500" cy="318" r="1.6" fill="#ffb629"/><circle cx="270" cy="380" r="1.6" fill="#ffb629"/><circle cx="442" cy="448" r="1.6" fill="#ff7a2f"/><circle cx="470" cy="465" r="2" fill="#ffb629"/><circle cx="408" cy="492" r="1.8" fill="#ffb629"/><circle cx="489" cy="458" r="1.4" fill="#ff7a2f"/></g><circle id="spark-core" cx="372" cy="350" r="30" fill="url(#spark-core)"/><path id="spark-s1" class="sp" style="--i:0" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m402.56 335.1 63.81-31.13"/><path id="spark-s2" class="sp" style="--i:1" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m392.49 333.99 85.89-67.1"/><path id="spark-s3" class="sp" style="--i:2" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m392.07 327.71 80.3-89.18"/><path id="spark-s4" class="sp" style="--i:3" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m383.98 331.55 53.38-82.19"/><path id="spark-s5" class="sp" style="--i:4" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m385.83 318.94 39.86-89.53"/><path id="spark-s6" class="sp" style="--i:5" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m379.25 322.95 19.67-73.41"/><path id="spark-s7" class="sp" style="--i:6" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="3" d="m470.96 285.73 33.55-21.78"/><path id="spark-s8" class="sp" style="--i:7" stroke="url(#spark-streak)" stroke-linecap="round" stroke-width="2.4" d="m447.24 246.45 28.21-38.84"/><circle id="spark-d1" class="sp" style="--i:8" cx="298" cy="186" r="2" fill="#ff7a2f"/><circle id="spark-d2" class="sp" style="--i:9" cx="345" cy="166" r="1.8" fill="#ffb629"/><circle id="spark-d3" class="sp" style="--i:10" cx="411" cy="147" r="2.2" fill="#ffb629"/><circle id="spark-d4" class="sp" style="--i:11" cx="455" cy="170" r="2.4" fill="#ff7a2f"/><circle id="spark-d5" class="sp" style="--i:12" cx="430" cy="196" r="1.6" fill="#ffb629"/><circle id="spark-d6" class="sp" style="--i:13" cx="262" cy="210" r="1.6" fill="#ffb629"/><circle id="spark-d7" class="sp" style="--i:14" cx="500" cy="232" r="2" fill="#ff7a2f"/><circle id="spark-d8" class="sp" style="--i:15" cx="520" cy="250" r="1.6" fill="#ffb629"/><circle id="spark-d9" class="sp" style="--i:16" cx="482" cy="292" r="2.2" fill="#ffb629"/><circle id="spark-d10" class="sp" style="--i:17" cx="455" cy="340" r="1.8" fill="#ff7a2f"/><circle id="spark-d11" class="sp" style="--i:18" cx="500" cy="318" r="1.6" fill="#ffb629"/><circle id="spark-d12" class="sp" style="--i:19" cx="270" cy="380" r="1.6" fill="#ffb629"/><circle id="spark-d13" class="sp" style="--i:20" cx="442" cy="448" r="1.6" fill="#ff7a2f"/><circle id="spark-d14" class="sp" style="--i:21" cx="470" cy="465" r="2" fill="#ffb629"/><circle id="spark-d15" class="sp" style="--i:22" cx="408" cy="492" r="1.8" fill="#ffb629"/><circle id="spark-d16" class="sp" style="--i:23" cx="489" cy="458" r="1.4" fill="#ff7a2f"/></g></g><g class="lyr" style="--d:16"><g id="planet-violet" class="orbiter" style="--cx:152px;--cy:292px"><g class="oi" transform="translate(-152 -292)"><g id="planet-violet-glow" class="glow" filter="url(#pv-blur)" opacity=".75"><circle cx="152" cy="292" r="40" fill="#6a3cff"/><path fill="none" stroke="#b76cff" stroke-width="6" d="M218.51 281.86a68 15-12 0 1-133.02 28.28"/></g><path id="planet-violet-ring-back" fill="none" stroke="#9a5bff" stroke-linecap="round" stroke-width="3.5" d="M85.49 310.14a68 15-12 0 1 133.02-28.28"/><circle id="planet-violet-body" cx="152" cy="292" r="40" fill="url(#pv-fill)"/><path id="planet-violet-ring" fill="none" stroke="#b76cff" stroke-linecap="round" stroke-width="4" d="M218.51 281.86a68 15-12 0 1-133.02 28.28"/></g></g></g><g class="lyr" style="--d:16"><g id="planet-green" class="orbiter" style="--cx:190px;--cy:437px"><g class="oi" transform="translate(-190 -437)"><g id="planet-green-glow" class="glow" filter="url(#pg-blur)" opacity=".6"><circle cx="190" cy="437" r="70" fill="#3e9a2b"/><path fill="#ff9a1f" d="M139 394c-3.3-20 5.5-36 11-40 5.5 4 14.3 20 11 40Zm20-8c-3.6-24 6-43.2 12-48 6 4.8 15.6 24 12 48Zm22-3c-3.9-27.5 6.5-49.5 13-55 6.5 5.5 16.9 27.5 13 55Zm24 6c-3.6-23 6-41.4 12-46 6 4.6 15.6 23 12 46Z"/></g><circle id="planet-green-body" cx="190" cy="437" r="70" fill="url(#pg-fill)"/><g id="planet-green-texture" clip-path="url(#pg-clip)"><ellipse cx="160" cy="410" fill="#b5d84a" opacity=".55" rx="30" ry="14"/><ellipse cx="215" cy="418" fill="#8cc63f" opacity=".5" rx="26" ry="12"/><ellipse cx="178" cy="455" fill="#2f7f2a" opacity=".55" rx="34" ry="13"/><ellipse cx="228" cy="470" fill="#1f6624" opacity=".6" rx="22" ry="10"/><ellipse cx="150" cy="470" fill="#3e9a2b" opacity=".6" rx="18" ry="9"/><ellipse cx="200" cy="492" fill="#1a5a21" opacity=".6" rx="28" ry="10"/><ellipse cx="190" cy="405" fill="#e3c14a" opacity=".55" rx="16" ry="7"/></g><path id="planet-green-trees" fill="url(#pg-tree)" d="M139 394c-3.3-20 5.5-36 11-40 5.5 4 14.3 20 11 40Zm20-8c-3.6-24 6-43.2 12-48 6 4.8 15.6 24 12 48Zm22-3c-3.9-27.5 6.5-49.5 13-55 6.5 5.5 16.9 27.5 13 55Zm24 6c-3.6-23 6-41.4 12-46 6 4.6 15.6 23 12 46Z"/></g></g></g><g class="lyr" style="--d:13"><g id="sun" class="orbiter" style="--cx:578px;--cy:178px"><g class="oi" transform="translate(-578 -178)"><circle id="sun-glow" cx="578" cy="178" r="52" fill="#ff4a1a" class="glow" filter="url(#sun-blur)" opacity=".8"/><circle id="sun-body" cx="578" cy="178" r="48" fill="url(#sun-fill)"/><path id="sun-swirl" fill="none" stroke="#ffc07a" stroke-linecap="round" stroke-opacity=".35" stroke-width="2.2" d="M552 170c8-12 26-14 34-4m2 28c-10 8-26 6-30-4m42-30c6 6 6 16 0 22"/></g></g></g><g class="lyr" style="--d:13"><g id="chart" class="orbiter" style="--cx:616px;--cy:337px"><g class="oi" transform="translate(-616 -337)"><circle id="chart-glow" cx="616" cy="337" r="62" fill="none" stroke="#22d3ee" stroke-width="6" class="glow" filter="url(#chart-blur)" opacity=".8"/><circle id="chart-body" cx="616" cy="337" r="62" fill="url(#chart-fill)"/><g id="chart-bars" clip-path="url(#chart-clip)"><path id="chart-bar-1" class="bar" style="--n:1" fill="#7b2fd9" d="M572 336h7v36h-7z"/><path id="chart-bar-2" class="bar" style="--n:2" fill="#c23bd4" d="M581.2 308h7v64h-7z"/><path id="chart-bar-3" class="bar" style="--n:3" fill="#2bb24c" d="M590.4 320h7v52h-7z"/><path id="chart-bar-4" class="bar" style="--n:4" fill="#d13bc9" d="M599.6 294h7v78h-7z"/><path id="chart-bar-5" class="bar" style="--n:5" fill="#9b3fe8" d="M608.8 302h7v70h-7z"/><path id="chart-bar-6" class="bar" style="--n:6" fill="#3a6bff" d="M618 312h7v60h-7z"/><path id="chart-bar-7" class="bar" style="--n:7" fill="#b03adb" d="M627.2 326h7v46h-7z"/><path id="chart-bar-8" class="bar" style="--n:8" fill="#2baa4c" d="M636.4 332h7v40h-7z"/><path id="chart-bar-9" class="bar" style="--n:9" fill="#3a6bff" d="M645.6 342h7v30h-7z"/><path id="chart-bar-10" class="bar" style="--n:10" fill="#c23bd4" d="M654.8 350h7v22h-7z"/><path id="chart-base" fill="#2e5bff" d="M566 372h100v6H566z"/></g><circle id="chart-ring" cx="616" cy="337" r="62" fill="none" stroke="#22d3ee" stroke-width="3"/></g></g></g><g class="lyr" style="--d:5"><g id="wordmark" fill="none" stroke="url(#wm-stroke)" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"><g id="wm-01-l" class="letter" style="--i:0"><path stroke-width="9" d="M74 566v48h30" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M74 566v48h30" class="core"/></g><g id="wm-02-a" class="letter" style="--i:1"><path stroke-width="9" d="m121 614 20-48 20 48m-33-16h26" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="m121 614 20-48 20 48m-33-16h26" class="core"/></g><g id="wm-03-t" class="letter" style="--i:2"><path stroke-width="9" d="M178 566h36m-18 0v48" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M178 566h36m-18 0v48" class="core"/></g><g id="wm-04-e" class="letter" style="--i:3"><path stroke-width="9" d="M261 566h-30v48h30m-30-24h26" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M261 566h-30v48h30m-30-24h26" class="core"/></g><g id="wm-05-r" class="letter" style="--i:4"><path stroke-width="9" d="M278 614v-48h19a12 12 0 0 1 0 24h-19m17 0 15 24" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M278 614v-48h19a12 12 0 0 1 0 24h-19m17 0 15 24" class="core"/></g><g id="wm-06-n" class="letter" style="--i:5"><path stroke-width="9" d="M327 614v-48l36 48v-48" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M327 614v-48l36 48v-48" class="core"/></g><g id="wm-07-i" class="letter" style="--i:6"><path stroke-width="9" d="M380 566v48" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M380 566v48" class="core"/></g><g id="wm-08-g" class="letter" style="--i:7"><path stroke-width="9" d="M433.5 575a20.5 24 0 1 0 3.5 19v-2h-17" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M433.5 575a20.5 24 0 1 0 3.5 19v-2h-17" class="core"/></g><g id="wm-09-h" class="letter" style="--i:8"><path stroke-width="9" d="M454 566v48m34-48v48m-34-24h34" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M454 566v48m34-48v48m-34-24h34" class="core"/></g><g id="wm-10-t" class="letter" style="--i:9"><path stroke-width="9" d="M505 566h36m-18 0v48" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M505 566h36m-18 0v48" class="core"/></g><g id="wm-11-l" class="letter" style="--i:10"><path stroke-width="9" d="M558 566v48h30" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M558 566v48h30" class="core"/></g><g id="wm-12-a" class="letter" style="--i:11"><path stroke-width="9" d="m605 614 20-48 20 48m-33-16h26" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="m605 614 20-48 20 48m-33-16h26" class="core"/></g><g id="wm-13-b" class="letter" style="--i:12"><path stroke-width="9" d="M662 590h18a10.5 10.5 0 0 0 0-24h-18v48h20a12 12 0 0 0 0-24" class="glow" filter="url(#wm-blur)" opacity=".7"/><path d="M662 590h18a10.5 10.5 0 0 0 0-24h-18v48h20a12 12 0 0 0 0-24" class="core"/></g></g></g></svg>
+      </div>
+      <p class="claim">Creating in the late night hours what the day hasn't seen...not yet!</p>
+      <button type="button" class="motion-btn" id="motion-btn" hidden>Attiva movimento</button>
+      <a class="cue" href="#rows" aria-label="Scorri ai giochi"><span class="cue-arrow" aria-hidden="true"></span></a>
+    </section>
 
-            <!-- Right: Apps -->
-            <aside class="side-col">
-                <section class="section-card">
-                    <h2>Apps</h2>
-                    <a href="ballers21.html" class="item-link">
-                        <img src="B21 Screenshot1.webp" alt="Ballers21 Icon">
-                        <div class="item-details">
-                            <span class="item-name">Ballers21</span>
-                            <span class="item-status active">View App →</span>
-                        </div>
-                    </a>
-                </section>
-            </aside>
-        </main>
+    <!-- Task 4: insert #featured and #rows sections here -->
 
-        <footer>
-            <div class="brand-footer">&copy; 2026 LATERNIGHTLAB — A project by MrGamer92</div>
-            <div class="footer-links">
-                <a href="privacy.html">Privacy – Solitaire Pulse</a>
-                <a href="privacy-nonna-vs-food-crimes.html">Privacy – Nonna vs Food Crimes</a>
-            </div>
-        </footer>
-    </div>
+    <!-- Task 5: insert #story section here -->
+  </main>
+
+  <!-- Task 5: insert footer here -->
 </body>
-
 </html>
